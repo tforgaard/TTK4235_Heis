@@ -1,9 +1,6 @@
 #include <Input.h>
 
 
-    // HARDWARE_ORDER_UP,
-    // HARDWARE_ORDER_INSIDE,
-    // HARDWARE_ORDER_DOWN
 Input input;
 
 void Input_check_elevator_buttons(){
@@ -22,7 +19,7 @@ void Input_check_elevator_buttons(){
 
 }
 
-void readStopSignal(){
+void Input_readStopSignal(){
     input.stopSignal=hardware_read_stop_signal();
     if ( input.stopSignal == 1 ) {
         hardware_command_stop_light(1);
@@ -32,7 +29,7 @@ void readStopSignal(){
     }
 }
 
-void setOrderLights() {
+void Input_setOrderLights() {
     for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-2; i++ ) {
         if ( input.buttonOrderDown[i] == 1 ){
             hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
@@ -63,25 +60,31 @@ void setOrderLights() {
     }
 }
 
-void setFloorSignal() {
-    int detectFloor;
+void Input_setFloorSignal() {
     for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ){
-            detectFloor=hardware_read_floor_sensor(i);
-            if (detectFloor == 1) {
-                current_floor = i;
-                break;
+            if (hardware_read_floor_sensor(i) == 1) {
+                input.floorSignal[i] = 1;
+                input.lastFloor = i;
+                hardware_command_floor_indicator_on(i);
+            }
+            else {
+                input.floorSignal[i] = 0;
             }
         }
 }
 
-void removeButtonOrderDown(int floor) {
+void Input_removeButtonOrderDown(int floor) {
     input.buttonOrderDown[floor]=0;
 }
 
-void removeButtonOrderUp(int floor) {
+void Input_removeButtonOrderUp(int floor) {
     input.buttonOrderUp[floor]=0;
 }
 
-void removeButtonOrderInside(int floor) {
+void Input_removeButtonOrderInside(int floor) {
     input.buttonOrderInside[floor]=0;
+}
+
+int Input_getLastFloor() {
+    return input.lastFloor;
 }

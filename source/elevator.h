@@ -18,12 +18,9 @@ void Elevator_update_current_floor();
 
 void Elevator_initialize() {
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-    int detectFloor = 0;
-
     while( current_floor == -1){
         for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ){
-            detectFloor=hardware_read_floor_sensor(i);
-            if (detectFloor == 1) {
+            if (hardware_read_floor_sensor(i) == 1 )  {
                 current_floor = i;
                 break;
             }
