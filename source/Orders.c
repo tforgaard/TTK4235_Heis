@@ -34,7 +34,7 @@ int Orders_get_lowest_order()
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS - 1; i++)
     {
-        if (up_orders[i] = 1)
+        if (up_orders[i] == 1)
         {
             return i;
         }

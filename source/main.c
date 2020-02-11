@@ -11,12 +11,9 @@ int main(){
         exit(1);
     }
 
-    printf("=== Example Program ===\n");
-    printf("Press the stop button on the elevator panel to exit\n");
-
-    hardware_command_movement(HARDWARE_MOVEMENT_UP);
-
+    Elevator_initialize();
     while(1){
+        
         if(hardware_read_stop_signal()){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             break;

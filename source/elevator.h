@@ -12,9 +12,27 @@ moving_to_lowest_order,
 idle
 } Elevator_state;
 
-int current_floor = 0;
+int current_floor = -1;
 int Elevator_get_current_floor(){return current_floor;}
 void Elevator_update_current_floor();
+
+void Elevator_initialize() {
+    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+    int detectFloor = 0;
+
+    while( current_floor == -1){
+        for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ){
+            detectFloor=hardware_read_floor_sensor(i);
+            if (detectFloor == 1) {
+                current_floor = i;
+                break;
+            }
+        }
+    }
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    // set state?
+}
+
 
 void Elevator_update(Elevator_state & current_state)
 {
@@ -72,7 +90,7 @@ void Elevator_update(Elevator_state & current_state)
     case stopping_on_up:
         if (Timer_is_set())
         {
-            if (Timer_get() >= 3)
+            if (Timer_get() >= 3000)
             {
                 Timer_reset();
                 Orders_remove_up_order(Elevator_get_current_floor());
