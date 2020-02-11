@@ -1,36 +1,152 @@
-#include "orderManager.h"
+#include "Orders.h"
+#include "Timer.h"
 
 typedef enum Elevator_state 
 {
-idle, 
-moving_up,
-moving_down,
+moving_up_to_service,
+moving_down_to_service,
 stopping_on_down,
 stopping_on_up,
-moving_to_highest,
-moving_to_lowest 
-};
+moving_to_highest_order,
+moving_to_lowest_order,
+idle
+} Elevator_state;
 
-void Elevator_next_state(Elevator_state * current_state)
+int current_floor = 0;
+int Elevator_get_current_floor(){return current_floor;}
+void Elevator_update_current_floor();
+
+void Elevator_update(Elevator_state & current_state)
 {
-    switch (*current_state)
+    Elevator_update_current_floor();
+
+    switch (current_state)
     {
     case idle:
-            if (!up_orders_is_empty)
+        if (!Orders_up_orders_is_empty)
+        {
+            current_state = moving_to_highest_order;
+        }
+        else if (!Orders_down_orders_is_empty)
+        {
+            current_state = moving_to_lowest_order;  
+        }
+        else
+        {
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+    case moving_to_highest_order:
+        if (Orders_get_lowest_order() > Elevator_get_current_floor())
             {
-                *current_state = moving_to_highest;
+                hardware_command_movement(HARDWARE_MOVEMENT_UP);
+            }
+        else if (Orders_get_lowest_order() < Elevator_get_current_floor())
+            {
+                hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+            }
+        else
+            {
+                current_state = stopping_on_down;
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            }
+        break;
+
+    case moving_to_lowest_order:
+        if (Orders_get_highest_order() > Elevator_get_current_floor())
+        {
+            hardware_command_movement(HARDWARE_MOVEMENT_UP);
+        }
+        else if (Orders_get_highest_order() < Elevator_get_current_floor())
+        {
+            hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+        }
+        else
+        {
+            current_state = stopping_on_up;
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+    case stopping_on_up:
+        if (Timer_is_set())
+        {
+            if (Timer_get() >= 3)
+            {
+                Timer_reset();
+                Orders_remove_up_order(Elevator_get_current_floor());
+
+                if (Orders_up_orders_is_empty())
+                 {
+                    current_state = idle;
+                    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                 }
+                 else 
+                {
+                    current_state = moving_up_to_service;
+                    hardware_command_movement(HARDWARE_MOVEMENT_UP);
+                }
             }
 
-            else if (!down_orders_is_empty)
+        }
+        else
+        {
+            Timer_set();
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+
+    case stopping_on_down:
+        if (Timer_is_set())
+        {
+            if (Timer_get() >= 3)
             {
-               *current_state = moving_to_lowest; 
+                Orders_remove_down_order(Elevator_get_current_floor());
+
+                if (Orders_down_orders_is_empty())
+                 {
+                    current_state = idle;
+                    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+                 }
+                 else 
+                {
+                    current_state = moving_down_to_service;
+                    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+                }
             }
-            
-            
-            
+
+        }
+        else
+        {
+            Timer_set();
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+    case moving_up_to_service:
+        if (Orders_floor_is_in_up_orders(Elevator_get_current_floor()))
+        {
+            current_state = stopping_on_up;
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+    case moving_down_to_service:
+        if (Orders_floor_is_in_down_orders(Elevator_get_current_floor()))
+        {
+            current_state = stopping_on_down;
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
         break;
     
     default:
+        current_state = idle;
         break;
     }
 }
+
+
+
+
