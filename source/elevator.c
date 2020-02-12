@@ -2,11 +2,11 @@
 
 
 void Elevator_update_current_floor(){
-    current_floor=Input_getLastFloor;
+    current_floor=Input_getLastFloor();
 }
 
 void Elevator_initialize() {
-    hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+    hardware_command_movement(HARDWARE_MOVEMENT_UP);
     while( current_floor == -1){
         for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ){
             if (hardware_read_floor_sensor(i) == 1 )  {
@@ -27,11 +27,11 @@ void Elevator_update(Elevator_state * current_state) // call function with ( & s
     switch (*current_state)
     {
     case idle:
-        if (!Orders_up_orders_is_empty)
+        if (!Orders_up_orders_is_empty())
         {
             *current_state = moving_to_highest_order;
         }
-        else if (!Orders_down_orders_is_empty)
+        else if (!Orders_down_orders_is_empty())
         {
             *current_state = moving_to_lowest_order;  
         }
