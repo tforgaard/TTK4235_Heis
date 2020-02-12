@@ -21,7 +21,8 @@ void Orders_set_down_order(int floor);
 void Orders_remove_up_order(int floor);
 void Orders_remove_down_order(int floor);
 
-/* void remove_all_orders();
+void remove_all_orders();
 
-void get_orders_from_hardware(); */
+void Orders_get_orders_from_IO();
+
 

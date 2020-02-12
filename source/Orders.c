@@ -86,3 +86,8 @@ void Orders_remove_down_order(int floor)
 {
     down_orders[floor] = 0;
 }
+
+void Orders_get_orders_from_IO()
+{
+    
+}

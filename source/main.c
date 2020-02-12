@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "hardware.h"
 #include "Orders.h"
+#include "elevator.h"
 
 
 int main(){
