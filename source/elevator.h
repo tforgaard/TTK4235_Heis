@@ -1,6 +1,6 @@
-#include "Orders.c"
-#include "Timer.c"
-#include "Input.c"
+#include "Orders.h"
+#include "Timer.h"
+#include "Input.h"
 
 typedef enum Elevator_state 
 {

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "elevator.c"
+#include "elevator.h"
 
 
 int main(){

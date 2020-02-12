@@ -1,5 +1,8 @@
 #include <hardware.h>
 
+#ifndef INPUT_H
+#define INPUT_H
+
 typedef struct Input
 {
     int stopSignal;
@@ -40,3 +43,5 @@ int * Input_get_buttonOrderInside();
 
 // void Input_ManageOrders() 
 // Må ha en god måte å gå fra bestillingssignalene buttonOrder... til Orders_set_..._order
+
+#endif
