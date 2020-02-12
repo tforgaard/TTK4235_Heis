@@ -1,5 +1,4 @@
 #include <hardware.h>
-#include <Orders.h>
 
 typedef struct Input
 {
@@ -7,9 +6,9 @@ typedef struct Input
     int obstructionSignal;
     int floorSignal[4];
     int lastFloor;
-    int buttonOrderDown[3];
-    int buttonOrderUp[3];
-    int buttonOrderInside[4];
+    int buttonOrderDown[HARDWARE_NUMBER_OF_FLOORS];
+    int buttonOrderUp[HARDWARE_NUMBER_OF_FLOORS];
+    int buttonOrderInside[HARDWARE_NUMBER_OF_FLOORS];
 
 } Input;
 
@@ -28,6 +27,12 @@ void Input_removeButtonOrderUp(int floor);
 void Input_removeButtonOrderInside(int floor);
 
 int Input_getLastFloor();
+
+int * Input_get_buttonOrderUp();
+
+int * Input_get_buttonOrderDown();
+
+int * Input_get_buttonOrderInside();
 
 // void Input_manageAll();
 // int Input_getStopSignal();

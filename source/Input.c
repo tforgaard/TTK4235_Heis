@@ -1,6 +1,5 @@
 #include <Input.h>
 
-
 Input input;
 
 void Input_check_elevator_buttons(){
@@ -87,4 +86,19 @@ void Input_removeButtonOrderInside(int floor) {
 
 int Input_getLastFloor() {
     return input.lastFloor;
+}
+
+int * Input_get_buttonOrderUp()
+{
+    return input.buttonOrderUp;
+}
+
+int * Input_get_buttonOrderDown()
+{
+    return input.buttonOrderDown;
+}
+
+int * Input_get_buttonOrderInside()
+{
+    return input.buttonOrderInside;
 }

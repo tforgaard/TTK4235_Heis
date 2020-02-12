@@ -67,22 +67,37 @@ int Orders_down_orders_is_empty()
     return 1;
 }
 
-void Orders_set_up_order(int floor)
-{
-    up_orders[floor] = 1;
-}
-
-void Orders_set_down_order(int floor)
-{
-    down_orders[floor] = 1;
-}
-
 void Orders_remove_up_order(int floor)
 {
-    up_orders[floor] = 0;
+    Input_removeButtonOrderDown(floor);
+    Input_removeButtonOrderInside(floor);
 }
 
 void Orders_remove_down_order(int floor)
 {
-    down_orders[floor] = 0;
+    Input_removeButtonOrderDown(floor);
+    Input_removeButtonOrderInside(floor);
+}
+
+void Orders_get_orders_from_IO()
+{
+    int * buttonOrderUp = Input_get_buttonOrderUp();
+    int * buttonOrderDown = Input_get_buttonOrderDown();
+    int * buttonOrderInside = Input_get_buttonOrderInside();
+
+    int current_floor = Input_getLastFloor();
+
+    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    {
+        up_orders[i] = buttonOrderUp[i];
+        down_orders[i] = buttonOrderDown[i];
+        if (i > current_floor)
+        {
+            up_orders[i] = buttonOrderInside[i];
+        }
+        else
+        {
+            down_orders[i] = buttonOrderInside[i];
+        }  
+    }
 }
