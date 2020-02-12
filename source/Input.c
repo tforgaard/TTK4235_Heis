@@ -29,33 +29,30 @@ void Input_readStopSignal(){
 }
 
 void Input_setOrderLights() {
-    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-2; i++ ) {
-        if ( input.buttonOrderDown[i] == 1 ){
-            hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
-        }
-        else {
-            hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 0);
-        }
-
-        if ( input.buttonOrderUp[i] == 1 ){
-            hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
-        }
-        else {
-            hardware_command_order_light(i, HARDWARE_ORDER_UP, 0);
+    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ) {
+        if (i>0){
+            if ( input.buttonOrderDown[i] == 1 ){
+                hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
+            }
+            else {
+                hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 0);
+            }
         }
 
+        if(i<3){
+            if ( input.buttonOrderUp[i] == 1 ){
+                hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
+            }
+            else {
+                hardware_command_order_light(i, HARDWARE_ORDER_UP, 0);
+            }
+        }
         if ( input.buttonOrderInside[i] == 1 ){
             hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);
         }
         else {
             hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 0);
         }
-    }
-    if ( input.buttonOrderInside[HARDWARE_NUMBER_OF_FLOORS-1] == 1 ){
-        hardware_command_order_light(HARDWARE_NUMBER_OF_FLOORS-1, HARDWARE_ORDER_INSIDE, 1);
-    }
-    else {
-        hardware_command_order_light(HARDWARE_NUMBER_OF_FLOORS-1, HARDWARE_ORDER_INSIDE, 0);
     }
 }
 
@@ -101,4 +98,13 @@ int * Input_get_buttonOrderDown()
 int * Input_get_buttonOrderInside()
 {
     return input.buttonOrderInside;
+}
+
+
+void Input_update(){
+    Input_check_elevator_buttons();
+    Input_readStopSignal();
+    Input_setOrderLights();
+    Input_setFloorSignal();
+    Input_getLastFloor();
 }

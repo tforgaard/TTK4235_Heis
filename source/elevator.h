@@ -14,6 +14,9 @@ idle
 } Elevator_state;
 
 int current_floor = -1;
+
+
+
 int Elevator_get_current_floor(){return current_floor;}
 void Elevator_update_current_floor();
 
@@ -21,6 +24,4 @@ void Elevator_initialize();
 
 void Elevator_update(Elevator_state * current_state);
 
-
-
-
+void Elevator_run();

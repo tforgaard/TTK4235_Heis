@@ -11,7 +11,8 @@ int main(){
     }
 
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    Elevator_initialize();
+    Elevator_run();
+    //Elevator_initialize();
     /*
     while(1){
 

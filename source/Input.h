@@ -41,7 +41,8 @@ int * Input_get_buttonOrderInside();
 // int Input_getStopSignal();
 // int Input_getObstructionSignal();
 
-// void Input_ManageOrders() 
-// Må ha en god måte å gå fra bestillingssignalene buttonOrder... til Orders_set_..._order
+
+
+void Input_update();
 
 #endif

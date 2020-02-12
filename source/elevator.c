@@ -151,6 +151,17 @@ void Elevator_update(Elevator_state * current_state) // call function with ( & s
     }
 }
 
+void Elevator_run(){
+    Elevator_initialize();
+    Elevator_state state=idle;
+    while(1){
+        Input_update();
+        Orders_get_orders_from_IO();
+        Elevator_update(& state);
+    }
+
+}
+
 
 
 
