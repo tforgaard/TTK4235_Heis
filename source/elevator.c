@@ -44,33 +44,48 @@ void Elevator_update(Elevator_state * current_state) // call function with ( & s
         break;
 
     case moving_to_highest_order:
-        if (Orders_get_lowest_order() > Elevator_get_current_floor())
+        if (Orders_get_lowest_order() !=-1){
+            if (Orders_get_lowest_order() > Elevator_get_current_floor())
             {
                 hardware_command_movement(HARDWARE_MOVEMENT_UP);
             }
-        else if (Orders_get_lowest_order() < Elevator_get_current_floor())
+            else if (Orders_get_lowest_order() < Elevator_get_current_floor())
             {
                 hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
             }
-        else
+            else
             {
                 *current_state = stopping_on_down;
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             }
-        break;
-
-    case moving_to_lowest_order:
-        if (Orders_get_highest_order() > Elevator_get_current_floor())
-        {
-            hardware_command_movement(HARDWARE_MOVEMENT_UP); //switch?
-        }
-        else if (Orders_get_highest_order() < Elevator_get_current_floor())
-        {
-            hardware_command_movement(HARDWARE_MOVEMENT_DOWN); //switch?
         }
         else
         {
-            *current_state = stopping_on_up;
+            *current_state = idle;
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+        break;
+
+    case moving_to_lowest_order:
+        if (Orders_get_highest_order() !=-1)
+        {
+            if (Orders_get_highest_order() > Elevator_get_current_floor())
+            {
+                hardware_command_movement(HARDWARE_MOVEMENT_UP); //switch?
+            }
+            else if (Orders_get_highest_order() < Elevator_get_current_floor())
+            {
+                hardware_command_movement(HARDWARE_MOVEMENT_DOWN); //switch?
+            }
+            else
+            {
+                *current_state = stopping_on_up;
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            }
+        }
+        else
+        {
+            *current_state = idle;
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
         break;
