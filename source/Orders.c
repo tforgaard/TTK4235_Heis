@@ -70,12 +70,14 @@ int Orders_down_orders_is_empty()
 
 void Orders_remove_up_order(int floor)
 {
-    Input_removeButtonOrderDown(floor);
+    up_orders[floor]=0;
+    Input_removeButtonOrderUp(floor);
     Input_removeButtonOrderInside(floor);
 }
 
 void Orders_remove_down_order(int floor)
 {
+    down_orders[floor]=0;
     Input_removeButtonOrderDown(floor);
     Input_removeButtonOrderInside(floor);
 }
