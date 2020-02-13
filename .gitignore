@@ -4,4 +4,5 @@ build/
 elevator
 html/
 latex/
+.vscode
 
