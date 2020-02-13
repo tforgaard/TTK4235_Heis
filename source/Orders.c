@@ -98,16 +98,24 @@ void Orders_get_orders_from_IO()
     int current_floor = Input_getLastFloor();
 
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
-    {
-        up_orders[i] = buttonOrderUp[i];
-        down_orders[i] = buttonOrderDown[i];
-        if (i > current_floor)
-        {
-            up_orders[i] = buttonOrderInside[i];
+    {   
+        if (buttonOrderDown[i]==1){
+            down_orders[i] = 1;
         }
-        else
-        {
-            down_orders[i] = buttonOrderInside[i];
-        }  
+
+        if (buttonOrderUp[i]==1){
+            up_orders[i] = 1;
+        }
+
+        if (buttonOrderInside[i]==1){
+            if (i > current_floor)
+            {
+                up_orders[i] = 1;
+            }
+            else
+            {
+                down_orders[i] = 1;
+            }  
+        }
     }
 }
