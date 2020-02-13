@@ -1,15 +1,22 @@
+#include "hardware.h"
 #include "Input.h"
+
 
 Input input;
 
 void Input_check_elevator_buttons(){
-    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++){
-        if(hardware_read_order(i,HARDWARE_ORDER_UP)) {
-            input.buttonOrderUp[i]=1;
+    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
+        if(i<3){
+            if(hardware_read_order(i,HARDWARE_ORDER_UP)) {
+                input.buttonOrderUp[i]=1;
+            }
         }
-        if(hardware_read_order(i,HARDWARE_ORDER_DOWN)) {
-            input.buttonOrderDown[i]=1;
+        if(i>0){
+            if(hardware_read_order(i,HARDWARE_ORDER_DOWN)) {
+                input.buttonOrderDown[i]=1;
+            }
         }
+
         if (hardware_read_order(i,HARDWARE_ORDER_INSIDE)) {
             input.buttonOrderInside[i]=1;
         } 
@@ -29,7 +36,7 @@ void Input_readStopSignal(){
 }
 
 void Input_setOrderLights() {
-    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ) {
+    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ ) {
         if (i>0){
             if ( input.buttonOrderDown[i] == 1 ){
                 hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
@@ -57,7 +64,7 @@ void Input_setOrderLights() {
 }
 
 void Input_setFloorSignal() {
-    for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS-1; i++ ){
+    for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ ){
             if (hardware_read_floor_sensor(i) == 1) {
                 input.floorSignal[i] = 1;
                 input.lastFloor = i;

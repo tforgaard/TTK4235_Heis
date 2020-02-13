@@ -1,8 +1,6 @@
-#include "hardware.h"
-
-
 #ifndef ELEVATOR_H
 #define ELEVATOR_H
+
 
 typedef enum Elevator_state 
 {

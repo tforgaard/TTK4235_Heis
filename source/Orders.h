@@ -3,7 +3,6 @@
 #ifndef ORDERS_H
 #define ORDERS_H
 
-
 int up_orders[HARDWARE_NUMBER_OF_FLOORS];
 int down_orders[HARDWARE_NUMBER_OF_FLOORS];
 

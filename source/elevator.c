@@ -3,7 +3,6 @@
 #include "Input.h"
 #include "elevator.h"
 
-
 void Elevator_update_current_floor(){
     current_floor=Input_getLastFloor();
 }
@@ -63,11 +62,11 @@ void Elevator_update(Elevator_state * current_state) // call function with ( & s
     case moving_to_lowest_order:
         if (Orders_get_highest_order() > Elevator_get_current_floor())
         {
-            hardware_command_movement(HARDWARE_MOVEMENT_UP);
+            hardware_command_movement(HARDWARE_MOVEMENT_UP); //switch?
         }
         else if (Orders_get_highest_order() < Elevator_get_current_floor())
         {
-            hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+            hardware_command_movement(HARDWARE_MOVEMENT_DOWN); //switch?
         }
         else
         {
@@ -108,8 +107,9 @@ void Elevator_update(Elevator_state * current_state) // call function with ( & s
     case stopping_on_down:
         if (Timer_is_set())
         {
-            if (Timer_get() >= 3)
+            if (Timer_get() >= 3000)
             {
+                Timer_reset();
                 Orders_remove_down_order(Elevator_get_current_floor());
 
                 if (Orders_down_orders_is_empty())
@@ -158,9 +158,18 @@ void Elevator_run(){
     Elevator_initialize();
     Elevator_state state=idle;
     while(1){
-        Input_update();
-        Orders_get_orders_from_IO();
-        Elevator_update(& state);
+        if(!hardware_read_stop_signal()){
+            Input_update();
+            Orders_get_orders_from_IO();
+            Elevator_update(& state);
+        }
+        else {
+            state=idle;
+            Input_setOrderLights();
+            Orders_remove_all_orders();
+            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        }
+
     }
 
 }
