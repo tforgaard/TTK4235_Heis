@@ -1,3 +1,4 @@
+#include "Input.h"
 #include "Orders.h"
 
 int Orders_floor_is_in_up_orders(int floor)

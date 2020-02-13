@@ -1,4 +1,8 @@
-#include "Input.h"
+#include "hardware.h"
+
+#ifndef ORDERS_H
+#define ORDERS_H
+
 
 int up_orders[HARDWARE_NUMBER_OF_FLOORS];
 int down_orders[HARDWARE_NUMBER_OF_FLOORS];
@@ -22,3 +26,4 @@ void Orders_remove_all_orders();
 
 void Orders_get_orders_from_IO();
 
+#endif

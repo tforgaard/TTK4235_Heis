@@ -1,6 +1,8 @@
-#include "Orders.h"
-#include "Timer.h"
-#include "Input.h"
+#include "hardware.h"
+
+
+#ifndef ELEVATOR_H
+#define ELEVATOR_H
 
 typedef enum Elevator_state 
 {
@@ -25,3 +27,5 @@ void Elevator_initialize();
 void Elevator_update(Elevator_state * current_state);
 
 void Elevator_run();
+
+#endif
