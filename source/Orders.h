@@ -6,9 +6,6 @@
 int up_orders[HARDWARE_NUMBER_OF_FLOORS];
 int down_orders[HARDWARE_NUMBER_OF_FLOORS];
 
-/* int get_up_orders();
-int get_down_orders(); */
-
 int Orders_floor_is_in_up_orders(int floor);
 int Orders_floor_is_in_down_orders(int floor);
 
@@ -24,5 +21,7 @@ void Orders_remove_down_order(int floor);
 void Orders_remove_all_orders();
 
 void Orders_get_orders_from_IO();
+
+void Orders_add_order_from_button(button button_press, int floor);
 
 #endif

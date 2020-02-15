@@ -3,6 +3,12 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+typedef enum button{
+    HARDWARE_ORDER_UP,
+    HARDWARE_ORDER_INSIDE,
+    HARDWARE_ORDER_DOWN
+} button;
+
 typedef struct Input
 {
     int stopSignal;
@@ -36,12 +42,6 @@ int * Input_get_buttonOrderUp();
 int * Input_get_buttonOrderDown();
 
 int * Input_get_buttonOrderInside();
-
-// void Input_manageAll();
-// int Input_getStopSignal();
-// int Input_getObstructionSignal();
-
-
 
 void Input_update();
 

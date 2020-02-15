@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hardware.h"
-#include "manage_elevator.h"
-
+#include "FSM.h"
 
 
 int main(){
@@ -11,8 +10,10 @@ int main(){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
     }
-    Elevator_state elevator_state=idle;
+    Elevator_state current_state=idle;
+    Elevator_state last_state=idle;
+    
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    Elevator_run(& elevator_state);
+    FSM_run(& current_state, & last_state);
 
 }

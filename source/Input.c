@@ -1,28 +1,32 @@
 #include "hardware.h"
 #include "Input.h"
 
-
 Input input;
 
 void Input_check_elevator_buttons(){
+    int current_floor = Input_getLastFloor();
     for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
         if(i<3){
             if(hardware_read_order(i,HARDWARE_ORDER_UP)) {
-                input.buttonOrderUp[i]=1;
+                //input.buttonOrderUp[i] = 1;
+                Orders_add_order_from_button(HARDWARE_ORDER_UP, current_floor);
+                hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
             }
         }
         if(i>0){
             if(hardware_read_order(i,HARDWARE_ORDER_DOWN)) {
-                input.buttonOrderDown[i]=1;
+                //input.buttonOrderDown[i] = 1;
+                Orders_add_order_from_button(HARDWARE_ORDER_DOWN, current_floor);
+                hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
             }
         }
 
         if (hardware_read_order(i,HARDWARE_ORDER_INSIDE)) {
-            input.buttonOrderInside[i]=1;
+            //input.buttonOrderInside[i] = 1;
+            Orders_add_order_from_button(HARDWARE_ORDER_INSIDE, current_floor);
+            hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
         } 
-
     }
-
 }
 
 void Input_readStopSignal(){
@@ -32,34 +36,6 @@ void Input_readStopSignal(){
     }
     else {
         hardware_command_stop_light(0);
-    }
-}
-
-void Input_setOrderLights() {
-    for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ ) {
-        if (i>0){
-            if ( input.buttonOrderDown[i] == 1 ){
-                hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
-            }
-            else {
-                hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 0);
-            }
-        }
-
-        if(i<3){
-            if ( input.buttonOrderUp[i] == 1 ){
-                hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
-            }
-            else {
-                hardware_command_order_light(i, HARDWARE_ORDER_UP, 0);
-            }
-        }
-        if ( input.buttonOrderInside[i] == 1 ){
-            hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);
-        }
-        else {
-            hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 0);
-        }
     }
 }
 

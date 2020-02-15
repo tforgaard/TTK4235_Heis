@@ -31,7 +31,7 @@ int Orders_get_highest_order()
     return -1;
 }
 
-int Orders_get_lowest_order() //fix logic in elevator.h if ==-1;
+int Orders_get_lowest_order()
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
@@ -116,6 +116,28 @@ void Orders_get_orders_from_IO()
             {
                 down_orders[i] = 1;
             }  
+        }
+    }
+}
+
+void Orders_add_order_from_button(button button_press, int floor){
+    int current_floor = Input_getLastFloor();
+    if (button_press == HARDWARE_ORDER_DOWN){
+        down_orders[floor] = 1;
+    }
+
+    if (button_press == HARDWARE_ORDER_UP){
+        up_orders[floor] = 1;
+    }
+
+    if (button_press == HARDWARE_ORDER_INSIDE){
+        if (floor > current_floor)
+        {
+            up_orders[floor] = 1;
+        }
+        else
+        {
+            down_orders[floor] = 1;
         }
     }
 }
