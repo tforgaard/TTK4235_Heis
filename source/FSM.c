@@ -53,9 +53,6 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
         case idle:
             Elevator_idle(current_state, last_state);
             break;
-        
-        case idle_with_door_open:
-            Elevator_idle_with_door_open(current_state, last_state);
 
         case moving_to_highest_order:
             Elevator_moving_to_highest_order(current_state, last_state);
