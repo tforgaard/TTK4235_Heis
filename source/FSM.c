@@ -10,7 +10,6 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
     {
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         hardware_command_stop_light(1);
-        Elevator_set_order_lights();
         Orders_remove_all_orders();
         if ( Elevator_at_floor())
         {
@@ -28,7 +27,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
     }
     else if (Elevator_get_open_doors_flag())
     {
-        Elevator_update_buttons();
+        Elevator_check_buttons();
         hardware_command_stop_light(0);
         hardware_command_door_open(1);
 
@@ -47,7 +46,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
     }
     else
     {
-        Elevator_update_buttons();
+        Elevator_check_buttons();
         hardware_command_stop_light(0);
         Elevator_update_current_floor();
         switch (*current_state)
@@ -81,6 +80,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             break;
         
         default:
+            *last_state = *current_state; //idle?
             *current_state = idle;
             break;
         }

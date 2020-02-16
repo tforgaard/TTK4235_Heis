@@ -168,7 +168,7 @@ void Elevator_moving_to_lowest_order(Elevator_state * current_state, Elevator_st
     }
     else
     {
-        *last_state = current_state;
+        *last_state = *current_state;
         *current_state = idle;
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     }

@@ -93,7 +93,7 @@ void Orders_remove_all_orders() {
     }
 }
 
-void Orders_add_order_from_button(button button_press, int floor, int current_floor){
+void Orders_add_order_from_button(HardwareOrder button_press, int floor, int current_floor){
     hardware_command_order_light(floor,button_press,1);
     if (button_press == HARDWARE_ORDER_DOWN){
         down_orders[floor] = 1;
