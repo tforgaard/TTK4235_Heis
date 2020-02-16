@@ -14,13 +14,15 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
         Orders_remove_all_orders();
         if ( Elevator_at_floor())
         {
+            *last_state= idle; // maybe set it to current?
             *current_state=idle;
             hardware_command_door_open(1);
             Elevator_open_doors();
         }
         else
         {
-            current_state = idle;
+            *last_state= idle; // maybe set it to current?
+            *current_state = idle;
         }
         
     }
