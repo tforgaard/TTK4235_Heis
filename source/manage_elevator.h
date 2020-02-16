@@ -1,3 +1,5 @@
+#include "hardware.h"
+
 #ifndef MANAGE_ELEVATOR_H
 #define MANAGE_ELEVATOR_H
 
@@ -10,10 +12,15 @@ stopping_on_up,
 moving_to_highest_order,
 moving_to_lowest_order,
 idle,
-idle_with_door_open
 } Elevator_state;
 
 int current_floor;
+
+int elevator_floor_signal[HARDWARE_NUMBER_OF_FLOORS]; //fjern?
+int elevator_last_floor;
+
+int elevator_open_doors_flag;
+
 
 void Elevator_update_current_floor();
 
@@ -32,17 +39,21 @@ void Elevator_moving_to_highest_order(Elevator_state * current_state, Elevator_s
 
 void Elevator_moving_to_lowest_order(Elevator_state * current_state, Elevator_state * last_state);
 
-void Elevator_idle_with_door_open(Elevator_state * current_state, Elevator_state * last_state);
-
-void Elevator_idle(Elevator_state * current_state);
+void Elevator_idle(Elevator_state * current_state, Elevator_state * last_state);
 
 
 void Elevator_check_buttons();
 
 int Elevator_at_floor();
 
-int elevator_get_last_floor();
+int Elevator_get_last_floor();
 
 void Elevator_update_current_floor();
+
+void Elevator_open_doors();
+
+int Elevator_get_open_doors_flag();
+
+void Elevator_close_doors();
 
 #endif

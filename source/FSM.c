@@ -14,14 +14,34 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
         Orders_remove_all_orders();
         if ( Elevator_at_floor())
         {
-            *current_state=idle_with_door_open;
+            *current_state=idle;
             hardware_command_door_open(1);
+            Elevator_open_doors();
         }
         else
         {
             current_state = idle;
         }
         
+    }
+    else if (Elevator_get_open_doors_flag())
+    {
+        Elevator_update_buttons();
+        hardware_command_stop_light(0);
+        hardware_command_door_open(1);
+
+        if(hardware_read_obstruction_signal())
+        {
+            hardware_command_door_open(1); // unødvendig?
+            Timer_set();
+        }
+        else
+        {
+            if(Timer_get() >= 3000)
+            {
+                Elevator_close_doors();
+            }
+        }
     }
     else
     {
@@ -31,7 +51,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
         switch (*current_state)
         {
         case idle:
-            Elevator_idle(current_state);
+            Elevator_idle(current_state, last_state);
             break;
         
         case idle_with_door_open:
@@ -68,7 +88,6 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
     }    
 }
 
-
 void FSM_run(){
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     Elevator_initialize();
@@ -81,7 +100,3 @@ void FSM_run(){
     }
 
 }
-
-
-
-
