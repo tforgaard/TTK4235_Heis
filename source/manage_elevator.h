@@ -22,8 +22,6 @@ int elevator_last_floor;
 int elevator_open_doors_flag;
 
 
-void Elevator_update_current_floor();
-
 void Elevator_initialize();
 
 
