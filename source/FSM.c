@@ -1,38 +1,31 @@
 #include "FSM.h"
 #include "Orders.h"
 #include "Timer.h"
-#include "Input.h"
 #include "manage_elevator.h"
-
-void Elevator_update_current_floor(){
-    current_floor=Input_getLastFloor();
-}
-
-void Elevator_initialize() {
-    current_floor=-1;
-    hardware_command_movement(HARDWARE_MOVEMENT_UP);
-    while( current_floor == -1){
-        for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ ){
-            if (hardware_read_floor_sensor(i) == 1 )  {
-                current_floor = i;
-                break;
-            }
-        }
-    }
-    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    // set state?
-}
 
 
 void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // call function with ( & state)
 {
     if (hardware_read_stop_signal())
     {
+        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         hardware_command_stop_light(1);
-        *current_state=idle_with_door_open;
+        Elevator_set_order_lights();
+        Orders_remove_all_orders();
+        if ( Elevator_at_floor())
+        {
+            *current_state=idle_with_door_open;
+            hardware_command_door_open(1);
+        }
+        else
+        {
+            current_state = idle;
+        }
+        
     }
     else
     {
+        Elevator_update_buttons();
         hardware_command_stop_light(0);
         Elevator_update_current_floor();
         switch (*current_state)
@@ -76,22 +69,15 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
 }
 
 
-void FSM_run(Elevator_state * elevator_state, Elevator_state * last_state){
+void FSM_run(){
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     Elevator_initialize();
+    Elevator_state current_state = idle;
+    Elevator_state last_state = idle;
     
-    while(1){
-        if(!hardware_read_stop_signal()){
-            Input_update();
-            Orders_get_orders_from_IO();
-            Elevator_update(elevator_state);
-        }
-        else {
-            *elevator_state = idle;
-            Input_setOrderLights();
-            Orders_remove_all_orders();
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-        }
-
+    while(1)
+    {
+        FSM_update(&current_state, &last_state);
     }
 
 }

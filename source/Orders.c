@@ -1,4 +1,3 @@
-#include "Input.h"
 #include "Orders.h"
 
 int Orders_floor_is_in_up_orders(int floor)
@@ -71,66 +70,40 @@ int Orders_down_orders_is_empty()
 void Orders_remove_up_order(int floor)
 {
     up_orders[floor]=0;
-    Input_removeButtonOrderUp(floor);
-    Input_removeButtonOrderInside(floor);
+    //hardware_command_order_light(floor,HARDWARE_ORDER_DOWN,0);
+    hardware_command_order_light(floor,HARDWARE_ORDER_UP,0);
+    hardware_command_order_light(floor,HARDWARE_ORDER_INSIDE,0);
 }
 
 void Orders_remove_down_order(int floor)
 {
     down_orders[floor]=0;
-    Input_removeButtonOrderDown(floor);
-    Input_removeButtonOrderInside(floor);
+        hardware_command_order_light(floor,HARDWARE_ORDER_DOWN,0);
+        //hardware_command_order_light(floor,HARDWARE_ORDER_UP,0);
+        hardware_command_order_light(floor,HARDWARE_ORDER_INSIDE,0);
 }
 
 void Orders_remove_all_orders() {
     for (int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
         up_orders[i]=0;
         down_orders[i]=0;
+        hardware_command_order_light(i,HARDWARE_ORDER_DOWN,0);
+        hardware_command_order_light(i,HARDWARE_ORDER_UP,0);
+        hardware_command_order_light(i,HARDWARE_ORDER_INSIDE,0);
     }
 }
 
-void Orders_get_orders_from_IO()
-{
-    int * buttonOrderUp = Input_get_buttonOrderUp();
-    int * buttonOrderDown = Input_get_buttonOrderDown();
-    int * buttonOrderInside = Input_get_buttonOrderInside();
-
-    int current_floor = Input_getLastFloor();
-
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
-    {   
-        if (buttonOrderDown[i]==1){
-            down_orders[i] = 1;
-        }
-
-        if (buttonOrderUp[i]==1){
-            up_orders[i] = 1;
-        }
-
-        if (buttonOrderInside[i]==1){
-            if (i > current_floor)
-            {
-                up_orders[i] = 1;
-            }
-            else
-            {
-                down_orders[i] = 1;
-            }  
-        }
-    }
-}
-
-void Orders_add_order_from_button(button button_press, int floor){
-    int current_floor = Input_getLastFloor();
+void Orders_add_order_from_button(button button_press, int floor, int current_floor){
+    hardware_command_order_light(floor,button_press,1);
     if (button_press == HARDWARE_ORDER_DOWN){
         down_orders[floor] = 1;
     }
 
-    if (button_press == HARDWARE_ORDER_UP){
+    else if (button_press == HARDWARE_ORDER_UP){
         up_orders[floor] = 1;
     }
 
-    if (button_press == HARDWARE_ORDER_INSIDE){
+    else if (button_press == HARDWARE_ORDER_INSIDE){
         if (floor > current_floor)
         {
             up_orders[floor] = 1;

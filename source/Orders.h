@@ -3,6 +3,12 @@
 #ifndef ORDERS_H
 #define ORDERS_H
 
+typedef enum button{
+    HARDWARE_ORDER_UP,
+    HARDWARE_ORDER_INSIDE,
+    HARDWARE_ORDER_DOWN
+} button;
+
 int up_orders[HARDWARE_NUMBER_OF_FLOORS];
 int down_orders[HARDWARE_NUMBER_OF_FLOORS];
 
@@ -22,6 +28,6 @@ void Orders_remove_all_orders();
 
 void Orders_get_orders_from_IO();
 
-void Orders_add_order_from_button(button button_press, int floor);
+void Orders_add_order_from_button(button button_press, int floor, int current_floor);
 
 #endif

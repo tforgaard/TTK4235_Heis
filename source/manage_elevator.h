@@ -19,6 +19,7 @@ void Elevator_update_current_floor();
 
 void Elevator_initialize();
 
+
 void Elevator_moving_up_to_service(Elevator_state * current_state, Elevator_state * last_state);
 
 void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_state * last_state);
@@ -34,5 +35,14 @@ void Elevator_moving_to_lowest_order(Elevator_state * current_state, Elevator_st
 void Elevator_idle_with_door_open(Elevator_state * current_state, Elevator_state * last_state);
 
 void Elevator_idle(Elevator_state * current_state);
+
+
+void Elevator_check_buttons();
+
+int Elevator_at_floor();
+
+int elevator_get_last_floor();
+
+void Elevator_update_current_floor();
 
 #endif
