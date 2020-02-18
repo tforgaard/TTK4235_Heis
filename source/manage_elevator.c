@@ -4,18 +4,29 @@
 void Elevator_check_buttons(){
     for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
 
-        if(hardware_read_order(i,HARDWARE_ORDER_UP)) {
-            Orders_add_order_from_button(HARDWARE_ORDER_UP, i, Elevator_get_current_floor());
+        if(hardware_read_order(i,HARDWARE_ORDER_UP)) 
+        {
+            hardware_command_order_light(i,HARDWARE_ORDER_UP,1);
+            Orders_set_up_order(i);
         }
         
         if(hardware_read_order(i,HARDWARE_ORDER_DOWN)) 
         {
-            Orders_add_order_from_button(HARDWARE_ORDER_DOWN, i, Elevator_get_current_floor());
+            hardware_command_order_light(i,HARDWARE_ORDER_DOWN,1);
+            Orders_set_down_order(i);
         }
 
         if (hardware_read_order(i,HARDWARE_ORDER_INSIDE)) 
         {
-            Orders_add_order_from_button(HARDWARE_ORDER_INSIDE, i, Elevator_get_current_floor());
+            hardware_command_order_light(i,HARDWARE_ORDER_INSIDE,1);
+            if (i > current_floor)
+            {
+                Orders_set_up_order(i);
+            }
+            else
+            {
+               Orders_set_down_order(i);
+            } 
 
         } 
     }

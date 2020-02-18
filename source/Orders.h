@@ -26,6 +26,7 @@ void Orders_remove_down_order(int floor);
 
 void Orders_remove_all_orders();
 
-void Orders_add_order_from_button(HardwareOrder button_press, int floor, int current_floor);
+void Orders_set_up_order(int floor);
+void Orders_set_down_order(int floor);
 
 #endif

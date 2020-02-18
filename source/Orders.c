@@ -99,24 +99,11 @@ void Orders_remove_down_order(int floor)
     down_orders[floor]=0;
 }
 
-void Orders_add_order_from_button(HardwareOrder button_press, int floor, int current_floor){
-    hardware_command_order_light(floor,button_press,1);
-    if (button_press == HARDWARE_ORDER_DOWN){
-        down_orders[floor] = 1;
-    }
 
-    else if (button_press == HARDWARE_ORDER_UP){
-        up_orders[floor] = 1;
-    }
+void Orders_set_up_order(int floor){
+    up_orders[floor] = 1;
+}
 
-    else if (button_press == HARDWARE_ORDER_INSIDE){
-        if (floor > current_floor)
-        {
-            up_orders[floor] = 1;
-        }
-        else
-        {
-            down_orders[floor] = 1;
-        }
-    }
+void Orders_set_down_order(int floor){
+    down_orders[floor] = 1;
 }
