@@ -3,14 +3,12 @@
 #include "Timer.h"
 #include "manage_elevator.h"
 
-
 void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // call function with ( & state)
 {
     if (hardware_read_stop_signal())
     {
-        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-        hardware_command_stop_light(1);
-        Orders_remove_all_orders();
+        FSM_stop();
+
         if ( Elevator_at_floor())
         {
             *last_state= idle; // maybe set it to current?
@@ -42,6 +40,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             if(Timer_get() >= 3000)
             {
                 Elevator_close_doors();
+                hardware_command_door_open(0);
             }
         }
     }
@@ -87,6 +86,20 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             break;
         }
     }    
+}
+
+void FSM_stop()
+{
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    hardware_command_stop_light(1);
+
+    for (int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
+        Orders_remove_up_order(i);
+        Orders_remove_down_order(i);
+        hardware_command_order_light(i,HARDWARE_ORDER_DOWN,0);
+        hardware_command_order_light(i,HARDWARE_ORDER_UP,0);
+        hardware_command_order_light(i,HARDWARE_ORDER_INSIDE,0);
+    }
 }
 
 void FSM_run(){

@@ -70,27 +70,11 @@ int Orders_down_orders_is_empty()
 void Orders_remove_up_order(int floor)
 {
     up_orders[floor]=0;
-    //hardware_command_order_light(floor,HARDWARE_ORDER_DOWN,0);
-    hardware_command_order_light(floor,HARDWARE_ORDER_UP,0);
-    hardware_command_order_light(floor,HARDWARE_ORDER_INSIDE,0);
 }
 
 void Orders_remove_down_order(int floor)
 {
     down_orders[floor]=0;
-        hardware_command_order_light(floor,HARDWARE_ORDER_DOWN,0);
-        //hardware_command_order_light(floor,HARDWARE_ORDER_UP,0);
-        hardware_command_order_light(floor,HARDWARE_ORDER_INSIDE,0);
-}
-
-void Orders_remove_all_orders() {
-    for (int i=0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
-        up_orders[i]=0;
-        down_orders[i]=0;
-        hardware_command_order_light(i,HARDWARE_ORDER_DOWN,0);
-        hardware_command_order_light(i,HARDWARE_ORDER_UP,0);
-        hardware_command_order_light(i,HARDWARE_ORDER_INSIDE,0);
-    }
 }
 
 void Orders_add_order_from_button(HardwareOrder button_press, int floor, int current_floor){

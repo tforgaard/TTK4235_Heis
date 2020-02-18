@@ -13,4 +13,6 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state);
 
 void FSM_run();
 
+void FSM_stop();
+
 #endif
