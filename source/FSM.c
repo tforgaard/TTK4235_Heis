@@ -116,6 +116,8 @@ void FSM_run(){
 }
 
 void Elevator_initialize() {
+    Orders_init(HARDWARE_NUMBER_OF_FLOORS);
+
     current_floor=-1;
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
     while( current_floor == -1){

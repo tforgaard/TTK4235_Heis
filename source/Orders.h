@@ -1,10 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "hardware.h"
 
 #ifndef ORDERS_H
 #define ORDERS_H
 
-int up_orders[HARDWARE_NUMBER_OF_FLOORS];
-int down_orders[HARDWARE_NUMBER_OF_FLOORS];
+int *up_orders;
+int *down_orders;
+
+int floor_count;
+
+int Orders_init(int number_of_floors);
 
 int Orders_floor_is_in_up_orders(int floor);
 int Orders_floor_is_in_down_orders(int floor);

@@ -1,4 +1,26 @@
+
 #include "Orders.h"
+
+int Orders_init(int number_of_floors)
+{
+    up_orders = malloc(sizeof(int) * number_of_floors);
+    down_orders = malloc(sizeof(int) * number_of_floors);
+
+    if (!up_orders || !down_orders)
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < number_of_floors; i++)
+    {
+        up_orders[i] = 0;
+        down_orders[i] = 0;
+    }
+
+    floor_count = number_of_floors;
+
+    return 0;
+}
 
 int Orders_floor_is_in_up_orders(int floor)
 {
@@ -20,7 +42,7 @@ int Orders_floor_is_in_down_orders(int floor)
 
 int Orders_get_highest_order()
 {
-    for (int i = HARDWARE_NUMBER_OF_FLOORS - 1; i >= 0; i--)
+    for (int i = floor_count - 1; i >= 0; i--)
     {
         if (down_orders[i] == 1)
         {
@@ -32,7 +54,7 @@ int Orders_get_highest_order()
 
 int Orders_get_lowest_order()
 {
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    for (int i = 0; i < floor_count; i++)
     {
         if (up_orders[i] == 1)
         {
@@ -45,7 +67,7 @@ int Orders_get_lowest_order()
 
 int Orders_up_orders_is_empty()
 {
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    for (int i = 0; i < floor_count; i++)
     {
         if (up_orders[i] == 1)
         {
@@ -57,7 +79,7 @@ int Orders_up_orders_is_empty()
 
 int Orders_down_orders_is_empty()
 {
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    for (int i = 0; i < floor_count; i++)
     {
         if (down_orders[i] == 1)
         {
