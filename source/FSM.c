@@ -17,6 +17,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             *current_state=idle;
             hardware_command_door_open(1);
             Elevator_open_doors();
+            Timer_set();
         }
         else
         {
@@ -46,9 +47,10 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
     }
     else
     {
+        Elevator_update_current_floor();
         Elevator_check_buttons();
         hardware_command_stop_light(0);
-        Elevator_update_current_floor();
+
         switch (*current_state)
         {
         case idle:

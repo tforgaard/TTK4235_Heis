@@ -20,8 +20,6 @@ void Orders_remove_down_order(int floor);
 
 void Orders_remove_all_orders();
 
-void Orders_get_orders_from_IO();
-
 void Orders_add_order_from_button(HardwareOrder button_press, int floor, int current_floor);
 
 #endif
