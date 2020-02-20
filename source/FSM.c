@@ -72,12 +72,8 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             Elevator_stopping_on_down(current_state, last_state);
             break;
 
-        case moving_up_to_service:
-            Elevator_moving_up_to_service(current_state, last_state);
-            break;
-
-        case moving_down_to_service:
-            Elevator_moving_down_to_service(current_state, last_state);
+        case moving_to_service:
+            Elevator_moving_to_service(current_state, last_state);
             break;
         
         default:
@@ -131,9 +127,8 @@ void Elevator_initialize() {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
-
-void Elevator_moving_up_to_service(Elevator_state * current_state, Elevator_state * last_state){
-    if (Orders_floor_is_in_up_orders(Elevator_get_current_floor()) && Elevator_at_floor())
+void Elevator_moving_to_service(Elevator_state * current_state, Elevator_state * last_state){
+    if (Orders_floor_is_in_up_orders(Elevator_get_current_floor()) && Elevator_at_floor() && last_direction == HARDWARE_MOVEMENT_UP)
     {
         *last_state = *current_state;
         *current_state = stopping_on_up;
@@ -144,17 +139,7 @@ void Elevator_moving_up_to_service(Elevator_state * current_state, Elevator_stat
         Timer_set();
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     }
-    else
-    {   
-        *last_state = *current_state;
-        *current_state = idle;
-        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    }
-
-}
-
-void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_state * last_state){
-    if (Orders_floor_is_in_down_orders(Elevator_get_current_floor()) && Elevator_at_floor())
+    else if (Orders_floor_is_in_down_orders(Elevator_get_current_floor()) && Elevator_at_floor() && last_direction == HARDWARE_MOVEMENT_DOWN)
     {
         *last_state = *current_state;
         *current_state = stopping_on_down;
@@ -171,7 +156,7 @@ void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_st
         *current_state = idle;
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     }
-    
+
 }
 
 void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * last_state){
@@ -183,8 +168,9 @@ void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * 
         }
         else 
         {
-            *current_state = moving_down_to_service;
+            *current_state = moving_to_service;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+            last_direction = HARDWARE_MOVEMENT_DOWN;
         }
     *last_state = stopping_on_down;
 }
@@ -198,8 +184,9 @@ void Elevator_stopping_on_up(Elevator_state * current_state, Elevator_state * la
         }
         else
         {
-            *current_state = moving_up_to_service;
+            *current_state = moving_to_service;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
+            last_direction = HARDWARE_MOVEMENT_UP;
         }
     *last_state = stopping_on_up;
 }

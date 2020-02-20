@@ -5,15 +5,15 @@
 
 typedef enum Elevator_state 
 {
-moving_up_to_service, //0
-moving_down_to_service, //1
-stopping_on_down, //2
-stopping_on_up, //3
-moving_to_highest_order, //4
-moving_to_lowest_order, // 5
-idle, // 6
+moving_to_service, //0
+stopping_on_down, //1
+stopping_on_up, //2
+moving_to_highest_order, //3
+moving_to_lowest_order, // 4
+idle, // 5
 } Elevator_state;
 
+HardwareMovement last_direction;
 
 Elevator_state current_state;
 Elevator_state last_state;
@@ -28,9 +28,7 @@ void FSM_run(Elevator_state * current_state, Elevator_state * last_state);
 
 void FSM_stop();
 
-void Elevator_moving_up_to_service(Elevator_state * current_state, Elevator_state * last_state);
-
-void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_state * last_state);
+void Elevator_moving_to_service(Elevator_state * current_state, Elevator_state * last_state);
 
 void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * last_state);
 
