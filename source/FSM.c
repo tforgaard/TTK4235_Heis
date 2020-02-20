@@ -22,7 +22,7 @@ void FSM_update(Elevator_state * current_state, Elevator_state * last_state) // 
             *last_state= idle; // maybe set it to current?
             *current_state = idle;
         }
-        
+    
     }
     else if (Elevator_get_open_doors_flag())
     {
@@ -102,15 +102,15 @@ void FSM_stop()
     }
 }
 
-void FSM_run(){
+void FSM_run(Elevator_state * current_state, Elevator_state * last_state){
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     Elevator_initialize();
-    Elevator_state current_state = idle;
-    Elevator_state last_state = idle;
+    *current_state = idle;
+    *last_state = idle;
     
     while(1)
     {
-        FSM_update(&current_state, &last_state);
+        FSM_update(current_state, last_state);
     }
 
 }
@@ -174,8 +174,12 @@ void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * 
     }
     else
     {
-        *current_state = moving_to_lowest_order;
-        hardware_command_movement(HARDWARE_MOVEMENT_UP);
+        if (*last_state == moving_to_lowest_order)
+        {
+            *current_state = *last_state;
+            hardware_command_movement(HARDWARE_MOVEMENT_UP);
+        }
+
     }
     *last_state = stopping_on_down;
 }

@@ -14,13 +14,17 @@ moving_to_lowest_order,
 idle,
 } Elevator_state;
 
+
+Elevator_state current_state;
+Elevator_state last_state;
+
 void Elevator_update_current_floor();
 
 void Elevator_initialize();
 
 void FSM_update(Elevator_state * current_state, Elevator_state * last_state);
 
-void FSM_run();
+void FSM_run(Elevator_state * current_state, Elevator_state * last_state);
 
 void FSM_stop();
 

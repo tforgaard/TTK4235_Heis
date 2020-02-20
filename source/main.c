@@ -9,5 +9,5 @@ int main(){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
     }
-    FSM_run();
+    FSM_run(&current_state, &last_state);
 }
