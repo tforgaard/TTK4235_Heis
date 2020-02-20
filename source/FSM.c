@@ -218,11 +218,12 @@ void FSM_moving_up(state * current_state, state * next_state)
 /*
 Bugs:
 1. Etter et stoptrykk, tror heisen den fortsatt er i forrige etasje
-2. Bestillinger blir tatt imot til etasjen den er i.
+Fikset: 2. Bestillinger blir tatt imot til etasjen den er i.
 Fikset: 3. Dersom den går ned til 1. og skal opp etterpå, vil den fortsette å gå ned. Gjelder bare når man får down order fra outside. Gjelder bare når den ikke er mellom idle.
 4. Sletter feil bestilling. Går ned fra 2 etasje til 1. Trykker på ned knappen ute i 2. etasje. Da blir denne slettet. 
 Fikset: 5. Står i 1. etasje, noen trykker ned ute i 3, noen trykker opp ute i 2. Stopper i 2. etasje og forsetter ned. 
 6. Venter av og til 6 sekunder.
+7. Theo testen: går tilbake til 1. etasje, selvom lyset i 1. etasje går av i starten. 
 
 
 */
