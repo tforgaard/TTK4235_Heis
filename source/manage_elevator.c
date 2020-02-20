@@ -1,6 +1,20 @@
 #include "manage_elevator.h"
 #include "Orders.h"
 
+void Elevator_init(){
+    current_floor=-1;
+    hardware_command_movement(HARDWARE_MOVEMENT_UP);
+    while( current_floor == -1){
+        for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ ){
+            if (hardware_read_floor_sensor(i) == 1 )  {
+                current_floor = i;
+                break;
+            }
+        }
+    }
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+}
+
 void Elevator_check_buttons(){
     for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
 
