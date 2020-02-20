@@ -107,3 +107,49 @@ void Orders_set_up_order(int floor){
 void Orders_set_down_order(int floor){
     down_orders[floor] = 1;
 }
+
+
+int Orders_up_order_over_floor(int current_floor){
+    for (int i = current_floor+1; i<floor_count; i++)
+    {
+        if (up_orders[i] == 1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+}
+
+int Orders_up_order_under_floor(int current_floor){
+    for (int i = floor_count-1; i>floor_count; i--)
+    {
+        if (up_orders[i] == 1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int Orders_down_order_over_floor(int current_floor){
+    for (int i = current_floor+1; i<floor_count; i++)
+    {
+        if (down_orders[i] == 1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int Orders_down_order_under_floor(int current_floor){
+    for (int i = floor_count-1; i>floor_count; i--)
+    {
+        if (down_orders[i] == 1)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
