@@ -87,3 +87,15 @@ int Elevator_get_open_doors_flag(){
 void Elevator_close_doors(){
     elevator_open_doors_flag=0;
 }
+
+void Elevator_finished_up_order(){
+    Orders_remove_up_order(Elevator_get_current_floor());
+    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
+    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+}
+
+void Elevator_finished_down_order(){
+    Orders_remove_down_order(Elevator_get_current_floor());
+    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
+    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+}
