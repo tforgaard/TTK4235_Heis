@@ -141,6 +141,18 @@ void Elevator_moving_up_to_service(Elevator_state * current_state, Elevator_stat
         Timer_set();
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     }
+    else
+    {   
+        *last_state = *current_state;
+        *current_state = idle;
+        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    }
+    // else if (Elevator_get_current_floor()==3)
+    // {
+    //     *last_state = *current_state;
+    //     *current_state = idle;
+    //     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    // }
 }
 
 void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_state * last_state){
@@ -152,6 +164,19 @@ void Elevator_moving_down_to_service(Elevator_state * current_state, Elevator_st
         Timer_set();
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     }
+    // else if (Elevator_get_current_floor()==0)
+    // {
+    //     *last_state = *current_state;
+    //     *current_state = idle;
+    //     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    // }
+    else
+    {   
+        *last_state = *current_state;
+        *current_state = idle;
+        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    }
+    
 }
 
 void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * last_state){
@@ -159,8 +184,8 @@ void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * 
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
-    if(*last_state == moving_to_highest_order)
-    {
+    //if(*last_state == moving_to_highest_order)
+    //{
         if (Orders_down_orders_is_empty())
         {
             *current_state = idle;
@@ -171,16 +196,7 @@ void Elevator_stopping_on_down(Elevator_state * current_state, Elevator_state * 
             *current_state = moving_down_to_service;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
-    }
-    else
-    {
-        if (*last_state == moving_to_lowest_order)
-        {
-            *current_state = *last_state;
-            hardware_command_movement(HARDWARE_MOVEMENT_UP);
-        }
-
-    }
+    //}
     *last_state = stopping_on_down;
 }
 
@@ -190,12 +206,11 @@ void Elevator_stopping_on_up(Elevator_state * current_state, Elevator_state * la
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0); // disse må flyttes inn i last state løkken
     // for å skru av riktig lys 
-    if (*last_state == moving_to_lowest_order)
-    {
+    //if (*last_state == moving_to_lowest_order)
+    //{
         if (Orders_up_orders_is_empty())
         {
             *current_state = idle;
-            //elevator_open_doors();
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
         else
@@ -203,26 +218,29 @@ void Elevator_stopping_on_up(Elevator_state * current_state, Elevator_state * la
             *current_state = moving_up_to_service;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
         }
-        }
-    else 
-    {
-        if (*last_state == moving_to_highest_order)
-        {
-            *current_state = *last_state;
-            hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-        }
-    }
+        //}
     *last_state = stopping_on_up;
 }
 
 void Elevator_moving_to_highest_order(Elevator_state * current_state, Elevator_state * last_state){
-    if (Orders_get_highest_order() !=-1){
-        if (Orders_get_highest_order() > Elevator_get_current_floor())
+    if (Orders_get_highest_order() !=-1)
+    {
+        if (Orders_get_highest_order() >= Elevator_get_current_floor())
         {
-            if (Orders_floor_is_in_up_orders(Elevator_get_current_floor()))
+            if (Orders_get_highest_order() == Elevator_get_current_floor())
+            {
+                *last_state = *current_state;
+                *current_state = stopping_on_down;
+
+                Timer_set();
+                Elevator_open_doors();
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            }
+            else if (Orders_floor_is_in_up_orders(Elevator_get_current_floor()))
             {
                 *last_state = *current_state;
                 *current_state = stopping_on_up;
+
                 Timer_set();
                 Elevator_open_doors();
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
@@ -237,14 +255,7 @@ void Elevator_moving_to_highest_order(Elevator_state * current_state, Elevator_s
         {
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
-        else
-        {
-            *last_state = *current_state;
-            *current_state = stopping_on_down;
-            Elevator_open_doors();
-            Timer_set();
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-        }
+        
     }
     else
     {
@@ -257,32 +268,34 @@ void Elevator_moving_to_highest_order(Elevator_state * current_state, Elevator_s
 void Elevator_moving_to_lowest_order(Elevator_state * current_state, Elevator_state * last_state){
     if (Orders_get_lowest_order() !=-1)
     {
-        if (Orders_get_lowest_order() > Elevator_get_current_floor())
+        if (Orders_get_lowest_order() <= Elevator_get_current_floor())
         {
-            hardware_command_movement(HARDWARE_MOVEMENT_UP);
-        }
-        else if (Orders_get_lowest_order() < Elevator_get_current_floor())
-        {
-            if (Orders_floor_is_in_down_orders(Elevator_get_current_floor()))
+            if( Orders_get_lowest_order() == Elevator_get_current_floor())
+            {
+                *last_state = *current_state;
+                *current_state = stopping_on_up;
+
+                Timer_set();
+                Elevator_open_doors();
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            }
+            else if ( Orders_floor_is_in_down_orders(Elevator_get_current_floor()))
             {
                 *last_state = *current_state;
                 *current_state = stopping_on_down;
+
                 Timer_set();
                 Elevator_open_doors();
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             }
             else
-            {            
+            {
                 hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-            }
+            } 
         }
-        else
+        else if (Orders_get_lowest_order() > Elevator_get_current_floor())
         {
-            *last_state = *current_state;
-            *current_state = stopping_on_up;
-            Elevator_open_doors();
-            Timer_set();
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            hardware_command_movement(HARDWARE_MOVEMENT_UP);
         }
     }
     else

@@ -5,13 +5,13 @@
 
 typedef enum Elevator_state 
 {
-moving_up_to_service,
-moving_down_to_service,
-stopping_on_down,
-stopping_on_up,
-moving_to_highest_order,
-moving_to_lowest_order,
-idle,
+moving_up_to_service, //0
+moving_down_to_service, //1
+stopping_on_down, //2
+stopping_on_up, //3
+moving_to_highest_order, //4
+moving_to_lowest_order, // 5
+idle, // 6
 } Elevator_state;
 
 
