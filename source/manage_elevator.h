@@ -24,4 +24,8 @@ int Elevator_get_open_doors_flag();
 
 void Elevator_close_doors();
 
+void Elevator_finished_up_order();
+
+void Elevator_finished_down_order();
+
 #endif
