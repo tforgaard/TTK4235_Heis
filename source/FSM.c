@@ -3,6 +3,8 @@
 #include "Timer.h"
 #include "manage_elevator.h"
 
+    state current_state = IDLE;
+    state next_state = IDLE;
 
 void FSM_init() {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
@@ -26,8 +28,8 @@ void FSM_stop()
 
 void FSM_run(){
     FSM_init();
-    state current_state = IDLE;
-    state next_state = IDLE;
+
+
     
     while(1)
     {
@@ -90,11 +92,11 @@ void FSM_update(state * current_state, state * next_state)
             break;
         
         case MOVING_UP:
-            FSM_moving_down(current_state, next_state);
+            FSM_moving_up(current_state, next_state);
             break;
         
         case MOVING_DOWN:
-            FSM_moving_up(current_state, next_state);
+            FSM_moving_down(current_state, next_state);
             break;
 
         default:
@@ -156,7 +158,7 @@ void FSM_stopping(state * current_state, state * next_state)
 
 void FSM_moving_down(state * current_state, state * next_state)
 {
-    if (Orders_floor_is_in_down_orders(current_floor))
+    if (Orders_floor_is_in_down_orders(current_floor) || (Orders_get_lowest_order() == current_floor && !Orders_down_order_under_floor(current_floor)))
     {
         Orders_remove_down_order(current_floor);
         Elevator_open_doors();
@@ -168,14 +170,16 @@ void FSM_moving_down(state * current_state, state * next_state)
         {
             *next_state = MOVING_UP;
         }
-        *next_state = MOVING_DOWN;
+        else
+        {
+            *next_state = MOVING_DOWN;
+        }
     }
-    *next_state = MOVING_DOWN;
 }
 
 void FSM_moving_up(state * current_state, state * next_state)
 {
-    if (Orders_floor_is_in_up_orders(current_floor))
+    if (Orders_floor_is_in_up_orders(current_floor) || (Orders_get_highest_order() == current_floor && !Orders_up_order_over_floor(current_floor)))
     {
         Orders_remove_up_order(current_floor);
         Elevator_open_doors();
@@ -187,7 +191,10 @@ void FSM_moving_up(state * current_state, state * next_state)
         {
             *next_state = MOVING_DOWN;
         }
-        *next_state = MOVING_UP;
+        else
+        {
+            *next_state = MOVING_UP;
+        }
+        
     }
-    *next_state = MOVING_UP;
 }

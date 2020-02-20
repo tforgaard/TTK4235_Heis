@@ -120,7 +120,7 @@ int Orders_up_order_over_floor(int current_floor){
 }
 
 int Orders_up_order_under_floor(int current_floor){
-    for (int i = floor_count-1; i>floor_count; i--)
+    for (int i = 0; i < current_floor; i++)
     {
         if (up_orders[i] == 1)
         {
@@ -142,7 +142,7 @@ int Orders_down_order_over_floor(int current_floor){
 }
 
 int Orders_down_order_under_floor(int current_floor){
-    for (int i = floor_count-1; i>floor_count; i--)
+    for (int i = 0; i < current_floor; i++)
     {
         if (down_orders[i] == 1)
         {
