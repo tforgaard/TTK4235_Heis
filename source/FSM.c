@@ -169,6 +169,7 @@ void FSM_moving_down(state * current_state, state * next_state)
 {
     if (Elevator_at_floor())
     {
+                        //tar en på vei ned               eller               //treffer den nederste i up orders, og det er ingen down orders under
         if (Orders_floor_is_in_down_orders(current_floor) || (Orders_get_lowest_order() == current_floor && !Orders_down_order_under_floor(current_floor)))
         {
           
@@ -177,13 +178,16 @@ void FSM_moving_down(state * current_state, state * next_state)
             *current_state = STOPPING;
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
+                                //Fortsett ned dersom det finnes en bestilling under etasjen
             if (Orders_down_order_under_floor(current_floor) || Orders_up_order_under_floor(current_floor))
             {
                 *next_state = MOVING_DOWN;
             }
             else
             {
+                //Har ankommet den laveste, bytter da til ned modus
                 *next_state = MOVING_UP;
+                Elevator_finished_up_order();
             }
             Elevator_finished_down_order();
         }
@@ -209,6 +213,7 @@ void FSM_moving_up(state * current_state, state * next_state)
             else
             {
                 *next_state = MOVING_DOWN;
+                Elevator_finished_down_order();
             }
             Elevator_finished_up_order();
         }
@@ -217,7 +222,7 @@ void FSM_moving_up(state * current_state, state * next_state)
 
 /*
 Bugs:
-1. Etter et stoptrykk, tror heisen den fortsatt er i forrige etasje
+1. Etter et stoptrykk, tror heisen den fortsatt er i forrige etasje. Skal åpne dørene i 3 sek, så slette bestilling
 Fikset: 2. Bestillinger blir tatt imot til etasjen den er i.
 Fikset: 3. Dersom den går ned til 1. og skal opp etterpå, vil den fortsette å gå ned. Gjelder bare når man får down order fra outside. Gjelder bare når den ikke er mellom idle.
 4. Sletter feil bestilling. Går ned fra 2 etasje til 1. Trykker på ned knappen ute i 2. etasje. Da blir denne slettet. 
