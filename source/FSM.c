@@ -56,7 +56,7 @@ void FSM_update(state * current_state, state * next_state)
         }
     }
     else if (Elevator_get_open_doors_flag())
-    {
+    {   
         Elevator_check_buttons();
         hardware_command_stop_light(0);
         hardware_command_door_open(1);
@@ -131,6 +131,14 @@ void FSM_idle(state * current_state)
     else
     {
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+
+        if (Orders_floor_is_in_up_orders(current_floor) || Orders_floor_is_in_down_orders(current_floor))
+        {
+            Elevator_finished_down_order();
+            Elevator_finished_up_order();
+            Elevator_open_doors();
+            Timer_set();
+        }
     }
 }
 

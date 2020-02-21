@@ -18,10 +18,10 @@ void Elevator_init(){
 void Elevator_check_buttons(){
     for (int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++){
 
-/*         if (i == current_floor)
+        if (Elevator_get_open_doors_flag() && i == current_floor)
         {
             continue;
-        } */
+        }
         
         if(hardware_read_order(i,HARDWARE_ORDER_UP)) 
         {
@@ -46,9 +46,10 @@ void Elevator_check_buttons(){
             {
                Orders_set_down_order(i);
             } 
-        } 
+        }
     }
-}
+ }
+
 
 int Elevator_at_floor(){
     for(int i = 0; i<HARDWARE_NUMBER_OF_FLOORS; i++ )
