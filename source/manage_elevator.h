@@ -4,6 +4,7 @@
 #define MANAGE_ELEVATOR_H
 
 int current_floor;
+int was_moving_up_at_stop;
 
 int elevator_floor_signal[HARDWARE_NUMBER_OF_FLOORS]; //fjern?
 
@@ -28,5 +29,9 @@ void Elevator_close_doors();
 void Elevator_finished_up_order();
 
 void Elevator_finished_down_order();
+
+int Elevator_was_moving_up_at_stop();
+
+void Elevator_set_was_moving_up_at_stop(int boolian);
 
 #endif

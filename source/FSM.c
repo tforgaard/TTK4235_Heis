@@ -41,20 +41,15 @@ void FSM_update(state *current_state)
 {
     if (hardware_read_stop_signal())
     {
+
         //acounting for the scenario where elevator wants to go current floor after a stop
-        /*         if (*current_state == MOVING_DOWN)
+        if (*current_state != IDLE)
         {
-            * = MOVING_UP;
-            printf("\n\nnext state is down");
+            Elevator_set_was_moving_up_at_stop(*current_state == MOVING_UP);
         }
 
-        else if (*current_state == MOVING_UP)
-        {
-            * = MOVING_DOWN;
-            printf("\n\nnext state is up");
-        } */
-
         *current_state = IDLE;
+
         FSM_stop();
 
         if (Elevator_at_floor())
@@ -150,10 +145,21 @@ void FSM_idle(state *current_state)
         }
 
         //TODO: Gi dette et nytt navn. Forvirrende at bestilling til current floor blir lagret i down orders.
-        /*         else if (Orders_floor_is_in_down_orders(current_floor))
+        //denne situasjonen kommer man bare til etter at heisen har stoppet, og det er blitt lagt inn bestilling til cf
+        else if (Orders_floor_is_in_down_orders(current_floor))
         {
-            *current_state = STOPPING;
-        } */
+            if (Elevator_was_moving_up_at_stop())
+            {
+
+                *current_state = MOVING_DOWN;
+                hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
+            }
+            else
+            {
+                *current_state = MOVING_UP;
+                hardware_command_movement(HARDWARE_MOVEMENT_UP);
+            }
+        }
     }
 }
 

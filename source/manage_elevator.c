@@ -128,3 +128,13 @@ void Elevator_finished_down_order()
         Elevator_finished_up_order();
     }
 }
+
+int Elevator_was_moving_up_at_stop()
+{
+    return was_moving_up_at_stop;
+}
+
+void Elevator_set_was_moving_up_at_stop(int boolian)
+{
+    was_moving_up_at_stop = boolian;
+}
