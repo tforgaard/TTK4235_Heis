@@ -34,4 +34,6 @@ int Elevator_was_moving_up_at_stop();
 
 void Elevator_set_was_moving_up_at_stop(int boolian);
 
+void Elevator_turn_off_all_lights();
+
 #endif

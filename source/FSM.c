@@ -12,21 +12,6 @@ void FSM_init()
     Elevator_init();
 }
 
-void FSM_stop()
-{
-    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    hardware_command_stop_light(1);
-
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
-    {
-        Orders_remove_up_order(i);
-        Orders_remove_down_order(i);
-        hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 0);
-        hardware_command_order_light(i, HARDWARE_ORDER_UP, 0);
-        hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 0);
-    }
-}
-
 void FSM_run()
 {
     FSM_init();
@@ -41,16 +26,18 @@ void FSM_update(state *current_state)
 {
     if (hardware_read_stop_signal())
     {
-
         //acounting for the scenario where elevator wants to go current floor after a stop
         if (*current_state != IDLE)
         {
             Elevator_set_was_moving_up_at_stop(*current_state == MOVING_UP);
         }
-
         *current_state = IDLE;
 
-        FSM_stop();
+        hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+        hardware_command_stop_light(1);
+
+        Elevator_turn_off_all_lights();
+        Orders_remove_all_orders();
 
         if (Elevator_at_floor())
         {
@@ -58,6 +45,7 @@ void FSM_update(state *current_state)
             Elevator_open_doors();
             Timer_set();
         }
+        
     }
     else if (Elevator_get_open_doors_flag())
     {

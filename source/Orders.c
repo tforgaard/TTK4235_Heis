@@ -59,7 +59,6 @@ int Orders_get_lowest_order()
         {
             return i;
         }
-        
     }
     return -1;
 }
@@ -90,25 +89,27 @@ int Orders_down_orders_is_empty()
 
 void Orders_remove_up_order(int floor)
 {
-    up_orders[floor]=0;
+    up_orders[floor] = 0;
 }
 
 void Orders_remove_down_order(int floor)
 {
-    down_orders[floor]=0;
+    down_orders[floor] = 0;
 }
 
-
-void Orders_set_up_order(int floor){
+void Orders_set_up_order(int floor)
+{
     up_orders[floor] = 1;
 }
 
-void Orders_set_down_order(int floor){
+void Orders_set_down_order(int floor)
+{
     down_orders[floor] = 1;
 }
 
-int Orders_up_order_over_floor(int current_floor){
-    for (int i = current_floor+1; i<floor_count; i++)
+int Orders_up_order_over_floor(int current_floor)
+{
+    for (int i = current_floor + 1; i < floor_count; i++)
     {
         if (up_orders[i] == 1)
         {
@@ -116,10 +117,10 @@ int Orders_up_order_over_floor(int current_floor){
         }
     }
     return 0;
-
 }
 
-int Orders_up_order_under_floor(int current_floor){
+int Orders_up_order_under_floor(int current_floor)
+{
     for (int i = 0; i < current_floor; i++)
     {
         if (up_orders[i] == 1)
@@ -130,8 +131,9 @@ int Orders_up_order_under_floor(int current_floor){
     return 0;
 }
 
-int Orders_down_order_over_floor(int current_floor){
-    for (int i = current_floor+1; i<floor_count; i++)
+int Orders_down_order_over_floor(int current_floor)
+{
+    for (int i = current_floor + 1; i < floor_count; i++)
     {
         if (down_orders[i] == 1)
         {
@@ -141,7 +143,8 @@ int Orders_down_order_over_floor(int current_floor){
     return 0;
 }
 
-int Orders_down_order_under_floor(int current_floor){
+int Orders_down_order_under_floor(int current_floor)
+{
     for (int i = 0; i < current_floor; i++)
     {
         if (down_orders[i] == 1)
@@ -150,4 +153,13 @@ int Orders_down_order_under_floor(int current_floor){
         }
     }
     return 0;
+}
+
+void Orders_remove_all_orders()
+{
+    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    {
+        Orders_remove_up_order(i);
+        Orders_remove_down_order(i);
+    }
 }

@@ -138,3 +138,13 @@ void Elevator_set_was_moving_up_at_stop(int boolian)
 {
     was_moving_up_at_stop = boolian;
 }
+
+void Elevator_turn_off_all_lights()
+{
+    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    {
+        hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 0);
+        hardware_command_order_light(i, HARDWARE_ORDER_UP, 0);
+        hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 0);
+    }
+}
