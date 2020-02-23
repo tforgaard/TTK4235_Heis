@@ -151,7 +151,8 @@ void FSM_idle(state *current_state)
 void FSM_moving_down(state *current_state)
 {
     if (Elevator_at_floor())
-    {
+    {   
+        Elevator_update_current_floor();
         //treffer en etasje i down orders
         if (Orders_floor_is_in_down_orders(current_floor))
         {
@@ -187,6 +188,7 @@ void FSM_moving_up(state *current_state)
     //last_direction = HARDWARE_MOVEMENT_UP;
     if (Elevator_at_floor())
     {
+        Elevator_update_current_floor();
         //treffer en etasje i up_orders. Stopp. Slett cf
         if (Orders_floor_is_in_up_orders(current_floor))
         {
