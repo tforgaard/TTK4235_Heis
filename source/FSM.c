@@ -156,6 +156,12 @@ void FSM_moving_down(state *current_state)
             Elevator_open_doors();
             Timer_set();
             Elevator_finished_down_order();
+            Orders_remove_down_order(current_floor);
+            if ((Orders_get_lowest_order() == current_floor) && !Orders_down_order_under_floor(current_floor))
+            {
+                Elevator_finished_up_order();
+                Orders_remove_up_order(current_floor);
+            }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
 
@@ -192,6 +198,12 @@ void FSM_moving_up(state *current_state)
             Elevator_open_doors();
             Timer_set();
             Elevator_finished_up_order();
+            Orders_remove_up_order(current_floor);
+            if ((Orders_get_highest_order() == current_floor) && !Orders_up_order_over_floor(current_floor))
+            {
+                Elevator_finished_down_order();
+                Orders_remove_down_order(current_floor);
+            }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
 

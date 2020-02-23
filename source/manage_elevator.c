@@ -1,5 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "manage_elevator.h"
-#include "Orders.h"
 
 void Elevator_init()
 {
@@ -90,13 +91,8 @@ void Elevator_update_current_floor()
     {
         if (hardware_read_floor_sensor(i) == 1)
         {
-            elevator_floor_signal[i] = 1; //fjern
             current_floor = i;
             hardware_command_floor_indicator_on(i);
-        }
-        else
-        {
-            elevator_floor_signal[i] = 0; //fjern
         }
     }
 }
@@ -118,26 +114,14 @@ void Elevator_close_doors()
 
 void Elevator_finished_up_order()
 {
-    Orders_remove_up_order(Elevator_get_current_floor());
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
-
-    if ((Orders_get_highest_order() == current_floor) && !Orders_up_order_over_floor(current_floor))
-    {
-        Elevator_finished_down_order();
-    }
 }
 
 void Elevator_finished_down_order()
 {
-    Orders_remove_down_order(Elevator_get_current_floor());
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
-
-    if (Orders_get_lowest_order() == current_floor && !Orders_down_order_under_floor(current_floor))
-    {
-        Elevator_finished_up_order();
-    }
 }
 
 int Elevator_was_moving_up_at_stop()

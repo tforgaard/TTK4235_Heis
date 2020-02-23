@@ -5,9 +5,6 @@
 
 int current_floor;
 int was_moving_up_at_stop;
-
-int elevator_floor_signal[HARDWARE_NUMBER_OF_FLOORS]; //fjern?
-
 int elevator_open_doors_flag;
 
 void Elevator_init();
