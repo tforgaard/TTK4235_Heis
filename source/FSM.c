@@ -122,19 +122,16 @@ void FSM_idle(state *current_state)
     {
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
-        if (Elevator_at_floor())
+        if (Orders_floor_is_in_up_orders(current_floor) || Orders_floor_is_in_down_orders(current_floor))
         {
-            if (Orders_floor_is_in_up_orders(current_floor) || Orders_floor_is_in_down_orders(current_floor))
+            if (Elevator_at_floor())
             {
                 Elevator_finished_down_order();
                 Elevator_finished_up_order();
                 Elevator_open_doors();
                 Timer_set();
             }
-        }
-        else if (Orders_floor_is_in_down_orders(current_floor))
-        {
-            if (Elevator_was_moving_up_at_stop())
+            else if (Elevator_was_moving_up_at_stop())
             {
                 *current_state = MOVING_DOWN;
                 hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
