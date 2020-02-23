@@ -1,5 +1,3 @@
-#include "hardware.h"
-
 #ifndef MANAGE_ELEVATOR_H
 #define MANAGE_ELEVATOR_H
 

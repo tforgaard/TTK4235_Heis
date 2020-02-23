@@ -1,6 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "hardware.h"
 #include "manage_elevator.h"
+
+#include <stdlib.h>
 
 void Elevator_init()
 {

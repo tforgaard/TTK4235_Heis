@@ -1,5 +1,7 @@
 #include "Orders.h"
 
+#include <stdlib.h>
+
 int Orders_init(int number_of_floors)
 {
     up_orders = malloc(sizeof(int) * number_of_floors);
@@ -157,7 +159,7 @@ int Orders_down_order_under_floor(int current_floor)
 
 void Orders_remove_all_orders()
 {
-    for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
+    for (int i = 0; i < floor_count; i++)
     {
         Orders_remove_up_order(i);
         Orders_remove_down_order(i);

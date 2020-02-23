@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "hardware.h"
-
 #ifndef ORDERS_H
 #define ORDERS_H
 
@@ -18,7 +14,7 @@ int Orders_floor_is_in_down_orders(int floor);
 int Orders_get_highest_order(); //among down orders
 int Orders_get_lowest_order();  //among up orders
 
-int Orders_up_orders_is_empty(); //bool
+int Orders_up_orders_is_empty();
 int Orders_down_orders_is_empty();
 
 void Orders_remove_up_order(int floor);

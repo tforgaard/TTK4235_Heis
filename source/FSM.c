@@ -2,6 +2,7 @@
 #include "Orders.h"
 #include "Timer.h"
 #include "manage_elevator.h"
+#include "hardware.h"
 
 void FSM_init()
 {
@@ -54,7 +55,6 @@ void FSM_running(state *current_state)
 
 void FSM_stop_button_engaged(state *current_state)
 {
-    //acounting for the scenario where elevator wants to go current floor after a stop
     if (*current_state != IDLE)
     {
         Elevator_set_was_moving_up_at_stop(*current_state == MOVING_UP);
@@ -98,25 +98,15 @@ void FSM_doors_open(state *current_state)
 
 void FSM_idle(state *current_state)
 {
-    if (Orders_down_order_over_floor(current_floor))
+    if (Orders_down_order_over_floor(current_floor) || Orders_up_order_over_floor(current_floor))
     {
         *current_state = MOVING_UP;
         hardware_command_movement(HARDWARE_MOVEMENT_UP);
     }
-    else if (Orders_up_order_under_floor(current_floor))
+    else if (Orders_up_order_under_floor(current_floor) || Orders_down_order_under_floor(current_floor))
     {
         *current_state = MOVING_DOWN;
         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-    }
-    else if (Orders_down_order_under_floor(current_floor))
-    {
-        *current_state = MOVING_DOWN;
-        hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-    }
-    else if (Orders_up_order_over_floor(current_floor))
-    {
-        *current_state = MOVING_UP;
-        hardware_command_movement(HARDWARE_MOVEMENT_UP);
     }
     else
     {
@@ -128,6 +118,8 @@ void FSM_idle(state *current_state)
             {
                 Elevator_finished_down_order();
                 Elevator_finished_up_order();
+                Orders_remove_down_order(current_floor);
+                Orders_remove_up_order(current_floor);
                 Elevator_open_doors();
                 Timer_set();
             }
@@ -150,7 +142,6 @@ void FSM_moving_down(state *current_state)
     if (Elevator_at_floor())
     {   
         Elevator_update_current_floor();
-        //treffer en etasje i down orders
         if (Orders_floor_is_in_down_orders(current_floor))
         {
             Elevator_open_doors();
@@ -164,20 +155,15 @@ void FSM_moving_down(state *current_state)
             }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
-
-        //Det finnes en bestilling lavere. Fortsett ned
         else if (Orders_down_order_under_floor(current_floor) || Orders_up_order_under_floor(current_floor))
         {
             *current_state = MOVING_DOWN;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
-        //Har ankommet den laveste up_order, og det er ingen flere down_orders under. Bytter da til opp modus
         else if (Orders_get_lowest_order() == current_floor)
         {
             *current_state = MOVING_UP;
-            //ingen hardware action her fordi den må stoppe først
         }
-
         else
         {
             *current_state = IDLE;
@@ -188,11 +174,9 @@ void FSM_moving_down(state *current_state)
 
 void FSM_moving_up(state *current_state)
 {
-    //last_direction = HARDWARE_MOVEMENT_UP;
     if (Elevator_at_floor())
     {
         Elevator_update_current_floor();
-        //treffer en etasje i up_orders. Stopp. Slett cf
         if (Orders_floor_is_in_up_orders(current_floor))
         {
             Elevator_open_doors();
@@ -206,20 +190,15 @@ void FSM_moving_up(state *current_state)
             }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
-
-        //Den finnes en up order eller down order over cf. Fortsett opp
         else if (Orders_up_order_over_floor(current_floor) || Orders_down_order_over_floor(current_floor))
         {
             *current_state = MOVING_UP;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
         }
-
-        //Treffer den høyeste etasjen i down orders.
         else if ((Orders_get_highest_order() == current_floor))
         {
             *current_state = MOVING_DOWN;
         }
-
         else
         {
             *current_state = IDLE;
