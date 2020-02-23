@@ -19,8 +19,18 @@ void Elevator_init()
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
-void Elevator_check_buttons()
+int * Elevator_check_buttons()
 {
+    //[up1, up2, ... upNFLOORS, down1, down2, .. downNFLOORS]
+    //memory freed in recieving function
+    int *orders = (int*)malloc(sizeof(int) * 2*HARDWARE_NUMBER_OF_FLOORS);
+
+    for (int i = 0; i < 2*HARDWARE_NUMBER_OF_FLOORS; i++)
+    {
+        orders[i] = 0;
+    }
+    
+
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
 
@@ -32,13 +42,13 @@ void Elevator_check_buttons()
         if (hardware_read_order(i, HARDWARE_ORDER_UP))
         {
             hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
-            Orders_set_up_order(i);
+            orders[i] = 1;
         }
 
         if (hardware_read_order(i, HARDWARE_ORDER_DOWN))
         {
             hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
-            Orders_set_down_order(i);
+            orders[HARDWARE_NUMBER_OF_FLOORS + i] = 1;
         }
 
         if (hardware_read_order(i, HARDWARE_ORDER_INSIDE))
@@ -46,14 +56,15 @@ void Elevator_check_buttons()
             hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);
             if (i > current_floor)
             {
-                Orders_set_up_order(i);
+                orders[i] = 1;
             }
             else
             {
-                Orders_set_down_order(i);
+                orders[HARDWARE_NUMBER_OF_FLOORS + i] = 1;
             }
         }
     }
+    return orders;
 }
 
 int Elevator_at_floor()

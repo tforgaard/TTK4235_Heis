@@ -29,7 +29,7 @@ void FSM_update(state *current_state)
 void FSM_running(state *current_state)
 {
     Elevator_update_current_floor();
-    Elevator_check_buttons();
+    Orders_recieve_and_set_orders(Elevator_check_buttons());
     hardware_command_stop_light(0);
 
     switch (*current_state)
@@ -77,7 +77,7 @@ void FSM_stop_button_engaged(state *current_state)
 
 void FSM_doors_open(state *current_state)
 {
-    Elevator_check_buttons();
+    Orders_recieve_and_set_orders(Elevator_check_buttons());
     hardware_command_stop_light(0);
     hardware_command_door_open(1);
 

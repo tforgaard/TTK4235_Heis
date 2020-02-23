@@ -12,7 +12,7 @@ int elevator_open_doors_flag;
 
 void Elevator_init();
 
-void Elevator_check_buttons();
+int * Elevator_check_buttons();
 
 int Elevator_at_floor();
 

@@ -163,3 +163,19 @@ void Orders_remove_all_orders()
         Orders_remove_down_order(i);
     }
 }
+
+void Orders_recieve_and_set_orders(int * orders)
+{
+    for (int i = 0; i < floor_count; i++)
+    {
+        if(orders[i] == 1)
+        {
+            up_orders[i] = 1;
+        }
+        if (orders[i + floor_count] == 1)
+        {
+            down_orders[i] = 1;
+        }
+    }
+    free(orders);
+}
