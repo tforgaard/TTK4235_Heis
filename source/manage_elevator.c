@@ -86,7 +86,8 @@ int Elevator_get_current_floor()
     return current_floor;
 }
 
-void Elevator_update_current_floor()
+int direction_has_been_updated;
+void Elevator_update_current_floor(state direction)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
@@ -94,7 +95,19 @@ void Elevator_update_current_floor()
         {
             current_floor = i;
             hardware_command_floor_indicator_on(i);
-        }
+            direction_has_been_updated = 0;
+            return;
+        }        
+    } //Not at a floor
+    if (direction == MOVING_UP && !direction_has_been_updated)
+    {
+        Elevator_is_above_current_floor = 1;
+        direction_has_been_updated = 1;
+    }
+    else if (direction == MOVING_DOWN && !direction_has_been_updated)
+    {
+        Elevator_is_above_current_floor = 0;
+        direction_has_been_updated = 1;
     }
 }
 
@@ -125,7 +138,7 @@ void Elevator_finished_down_order()
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
 }
 
-int Elevator_was_moving_up_at_stop()
+/* int Elevator_was_moving_up_at_stop()
 {
     return was_moving_up_at_stop;
 }
@@ -133,7 +146,7 @@ int Elevator_was_moving_up_at_stop()
 void Elevator_set_was_moving_up_at_stop(int boolian)
 {
     was_moving_up_at_stop = boolian;
-}
+} */
 
 void Elevator_turn_off_all_lights()
 {

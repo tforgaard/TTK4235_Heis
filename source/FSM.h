@@ -1,12 +1,7 @@
-#ifndef FSM2_H
-#define FSM2_H
+#include "manage_elevator.h" //Need this for some reason.. why?
 
-typedef enum state
-{
-    IDLE,
-    MOVING_UP,
-    MOVING_DOWN
-} state;
+#ifndef FSM_H
+#define FSM_H
 
 void FSM_init();
 

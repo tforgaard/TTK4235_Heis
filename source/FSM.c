@@ -29,7 +29,7 @@ void FSM_update(state *current_state)
 
 void FSM_running(state *current_state)
 {
-    Elevator_update_current_floor();
+    Elevator_update_current_floor(*current_state);
     Orders_recieve_and_set_orders(Elevator_check_buttons());
     hardware_command_stop_light(0);
 
@@ -55,10 +55,6 @@ void FSM_running(state *current_state)
 
 void FSM_stop_button_engaged(state *current_state)
 {
-    if (*current_state != IDLE)
-    {
-        Elevator_set_was_moving_up_at_stop(*current_state == MOVING_UP);
-    }
     *current_state = IDLE;
 
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
@@ -123,7 +119,7 @@ void FSM_idle(state *current_state)
                 Elevator_open_doors();
                 Timer_set();
             }
-            else if (Elevator_was_moving_up_at_stop())
+            else if (Elevator_is_above_current_floor)
             {
                 *current_state = MOVING_DOWN;
                 hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -138,10 +134,10 @@ void FSM_idle(state *current_state)
 }
 
 void FSM_moving_down(state *current_state)
-{
+{   
+    Elevator_update_current_floor(*current_state);
     if (Elevator_at_floor())
     {   
-        Elevator_update_current_floor();
         if (Orders_floor_is_in_down_orders(current_floor))
         {
             Elevator_open_doors();
@@ -174,9 +170,9 @@ void FSM_moving_down(state *current_state)
 
 void FSM_moving_up(state *current_state)
 {
+    Elevator_update_current_floor(*current_state);
     if (Elevator_at_floor())
     {
-        Elevator_update_current_floor();
         if (Orders_floor_is_in_up_orders(current_floor))
         {
             Elevator_open_doors();

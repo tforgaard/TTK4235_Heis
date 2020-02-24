@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "hardware.h"
 #include "FSM.h"
+#include "manage_elevator.h"
 
 int main()
 {
