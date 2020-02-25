@@ -13,8 +13,7 @@ int elevator_open_doors_flag;
 typedef enum state
 {
     IDLE,
-    MOVING_UP,
-    MOVING_DOWN
+    MOVING,
 } state;
 
 /**
@@ -55,7 +54,7 @@ int Elevator_get_current_floor();
  *
  * @param[in] direction The direction the elevator is moving at, can also be @c IDLE .
 */
-void Elevator_update_current_floor(state direction);
+void Elevator_update_current_floor(int dir);
 
 //TODO: få disse inn i FSM.
 void Elevator_open_doors();
@@ -65,12 +64,7 @@ void Elevator_close_doors();
 /**
  * @brief Will turn off order up lights and inside lights at current floor.
 */
-void Elevator_finished_up_order(); //Change to up lights?
-
-/**
- * @brief Will turn off order down lights and inside lights at current floor.
-*/
-void Elevator_finished_down_order();
+void Elevator_finished_order(int dir);
 
 /**
  * @brief Will turn off all up, down and inside lights.

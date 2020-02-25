@@ -87,7 +87,7 @@ int Elevator_get_current_floor()
 }
 
 int direction_has_been_updated;
-void Elevator_update_current_floor(state direction)
+void Elevator_update_current_floor(int dir)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
@@ -99,12 +99,12 @@ void Elevator_update_current_floor(state direction)
             return;
         }        
     } //Not at a floor
-    if (direction == MOVING_UP && !direction_has_been_updated)
+    if (dir == 0 && !direction_has_been_updated)
     {
         Elevator_is_above_current_floor = 1;
         direction_has_been_updated = 1;
     }
-    else if (direction == MOVING_DOWN && !direction_has_been_updated)
+    else if (dir == 1 && !direction_has_been_updated)
     {
         Elevator_is_above_current_floor = 0;
         direction_has_been_updated = 1;
@@ -126,16 +126,24 @@ void Elevator_close_doors()
     elevator_open_doors_flag = 0;
 }
 
-void Elevator_finished_up_order()
+void Elevator_finished_order(int dir)
 {
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
-}
-
-void Elevator_finished_down_order()
-{
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+    if (dir == 0)
+    {
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+    }
+    else if (dir == 1)
+    {
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+    }
+    else 
+    {
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
+        hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+    }
 }
 
 void Elevator_turn_off_all_lights()

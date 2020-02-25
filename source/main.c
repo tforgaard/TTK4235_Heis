@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "hardware.h"
 #include "FSM.h"
+#include "Orders.h"
 #include "manage_elevator.h"
 
 int main()
@@ -14,11 +15,12 @@ int main()
     }
 
     state current_state = IDLE;
+    order current_order = BOTH; // må fikses
 
     FSM_init();
 
     while (1)
     {
-        FSM_update(&current_state);
+        FSM_update(&current_state, &current_order);
     }
 }
