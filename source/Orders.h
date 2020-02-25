@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @brief Order module keeps track of up and down orders,
+ * and provide operations on them. 
+ */
+
 #ifndef ORDERS_H
 #define ORDERS_H
 

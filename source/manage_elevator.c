@@ -138,16 +138,6 @@ void Elevator_finished_down_order()
     hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
 }
 
-/* int Elevator_was_moving_up_at_stop()
-{
-    return was_moving_up_at_stop;
-}
-
-void Elevator_set_was_moving_up_at_stop(int boolian)
-{
-    was_moving_up_at_stop = boolian;
-} */
-
 void Elevator_turn_off_all_lights()
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)

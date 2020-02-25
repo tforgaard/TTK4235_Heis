@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief FSM module updates the state of the elevator.
+ */
+
 #include "manage_elevator.h" //Need this for some reason.. why?
 
 #ifndef FSM_H
