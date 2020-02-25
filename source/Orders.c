@@ -23,18 +23,17 @@ int Orders_init(int number_of_floors)
     return 0;
 }
 
-int Orders_floor_is_in_up_orders(int floor)
+int Orders_floor_is_in_orders(int floor, Order order)
 {
-    if (up_orders[floor] == 1)
+    if (order == UP && up_orders[floor] == 1)
     {
         return 1;
     }
-    return 0;
-}
-
-int Orders_floor_is_in_down_orders(int floor)
-{
-    if (down_orders[floor] == 1)
+    else if (order == DOWN && down_orders[floor] == 1)
+    {
+        return 1;
+    }
+    else if (order == BOTH  && (up_orders[floor] == 1 || down_orders[floor] == 1))
     {
         return 1;
     }
@@ -65,55 +64,63 @@ int Orders_get_lowest_order()
     return -1;
 }
 
-int Orders_up_orders_is_empty()
+int Orders_get_h_l_order(Order order)
 {
-    for (int i = 0; i < floor_count; i++)
+    if (order == UP)
     {
-        if (up_orders[i] == 1)
+        for (int i = 0; i < floor_count; i++)
         {
-            return 0;
+            if (up_orders[i] == 1)
+            {
+                return i;
+            }
         }
+        return -1;
     }
-    return 1;
-}
-
-int Orders_down_orders_is_empty()
-{
-    for (int i = 0; i < floor_count; i++)
+    else if (order == DOWN)
     {
-        if (down_orders[i] == 1)
+        for (int i = floor_count - 1; i >= 0; i--)
         {
-            return 0;
+            if (down_orders[i] == 1)
+            {
+                return i;
+            }
         }
+        return -1;
     }
-    return 1;
+    return -1;
 }
 
-void Orders_remove_up_order(int floor)
+void Orders_remove_order(int floor, Order order)
 {
-    up_orders[floor] = 0;
+    if (order == UP)
+    {
+        up_orders[floor] = 0;
+    }
+    else if (order == DOWN)
+    {
+        down_orders[floor] = 0;
+    }
+    else if (order == BOTH)
+    {
+        up_orders[floor] = 0;
+        down_orders[floor] = 0;
+    }
 }
 
-void Orders_remove_down_order(int floor)
-{
-    down_orders[floor] = 0;
-}
-
-void Orders_set_up_order(int floor)
-{
-    up_orders[floor] = 1;
-}
-
-void Orders_set_down_order(int floor)
-{
-    down_orders[floor] = 1;
-}
-
-int Orders_up_order_over_floor(int current_floor)
+int Orders_over_floor(int current_floor, Order order)
 {
     for (int i = current_floor + 1; i < floor_count; i++)
     {
-        if (up_orders[i] == 1)
+        if (order == UP && up_orders[i] == 1)
+        {
+            return 1;
+        }
+        else if (order == DOWN && down_orders[i] == 1)
+        {
+            return 1;
+        }
+        else if (order == BOTH && (up_orders[i] == 1 || down_orders[i] == 1))
         {
             return 1;
         }
@@ -121,11 +128,19 @@ int Orders_up_order_over_floor(int current_floor)
     return 0;
 }
 
-int Orders_up_order_under_floor(int current_floor)
+int Orders_under_floor(int current_floor, Order order)
 {
     for (int i = 0; i < current_floor; i++)
     {
-        if (up_orders[i] == 1)
+        if (order == UP && up_orders[i] == 1)
+        {
+            return 1;
+        }
+        else if (order == DOWN && down_orders[i] == 1)
+        {
+            return 1;
+        }
+        else if (order == BOTH && (up_orders[i] == 1 || down_orders[i] == 1))
         {
             return 1;
         }
@@ -133,36 +148,12 @@ int Orders_up_order_under_floor(int current_floor)
     return 0;
 }
 
-int Orders_down_order_over_floor(int current_floor)
-{
-    for (int i = current_floor + 1; i < floor_count; i++)
-    {
-        if (down_orders[i] == 1)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-int Orders_down_order_under_floor(int current_floor)
-{
-    for (int i = 0; i < current_floor; i++)
-    {
-        if (down_orders[i] == 1)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
 
 void Orders_remove_all_orders()
 {
     for (int i = 0; i < floor_count; i++)
     {
-        Orders_remove_up_order(i);
-        Orders_remove_down_order(i);
+        Orders_remove_order(i, BOTH);
     }
 }
 
