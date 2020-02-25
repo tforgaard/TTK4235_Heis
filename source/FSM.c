@@ -152,12 +152,10 @@ void FSM_moving(state *current_state, order *current_order)
         else if (Orders_under_floor(current_floor, BOTH))
         {
             *current_order = DOWN;
-            //*current_state = MOVING_DOWN;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
-        else if (Orders_get_lowest_order() == current_floor)
+        else if (Orders_get_h_l_order(1^*current_order) == current_floor)
         {
-            //*current_state = MOVING_UP;
             *current_order = UP;
         }
         else

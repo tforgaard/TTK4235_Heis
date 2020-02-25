@@ -23,7 +23,7 @@ int Orders_init(int number_of_floors)
     return 0;
 }
 
-int Orders_floor_is_in_orders(int floor, Order order)
+int Orders_floor_is_in_orders(int floor, order order)
 {
     if (order == UP && up_orders[floor] == 1)
     {
@@ -40,31 +40,7 @@ int Orders_floor_is_in_orders(int floor, Order order)
     return 0;
 }
 
-int Orders_get_highest_order()
-{
-    for (int i = floor_count - 1; i >= 0; i--)
-    {
-        if (down_orders[i] == 1)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int Orders_get_lowest_order()
-{
-    for (int i = 0; i < floor_count; i++)
-    {
-        if (up_orders[i] == 1)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int Orders_get_h_l_order(Order order)
+int Orders_get_h_l_order(order order)
 {
     if (order == UP)
     {
@@ -91,7 +67,7 @@ int Orders_get_h_l_order(Order order)
     return -1;
 }
 
-void Orders_remove_order(int floor, Order order)
+void Orders_remove_order(int floor, order order)
 {
     if (order == UP)
     {
@@ -108,7 +84,7 @@ void Orders_remove_order(int floor, Order order)
     }
 }
 
-int Orders_over_floor(int current_floor, Order order)
+int Orders_over_floor(int current_floor, order order)
 {
     for (int i = current_floor + 1; i < floor_count; i++)
     {
@@ -128,7 +104,7 @@ int Orders_over_floor(int current_floor, Order order)
     return 0;
 }
 
-int Orders_under_floor(int current_floor, Order order)
+int Orders_under_floor(int current_floor, order order)
 {
     for (int i = 0; i < current_floor; i++)
     {
