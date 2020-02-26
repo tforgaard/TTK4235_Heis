@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "hardware.h"
-#include "FSM.h"
-#include "manage_elevator.h"
-#include "Timer.h"
+#include "fsm.h"
+#include "elevator.h"
+#include "timer.h"
 
 
 
