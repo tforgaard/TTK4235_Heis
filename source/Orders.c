@@ -65,30 +65,6 @@ int Orders_get_lowest_order()
     return -1;
 }
 
-int Orders_up_orders_is_empty()
-{
-    for (int i = 0; i < floor_count; i++)
-    {
-        if (up_orders[i] == 1)
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-int Orders_down_orders_is_empty()
-{
-    for (int i = 0; i < floor_count; i++)
-    {
-        if (down_orders[i] == 1)
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-
 void Orders_remove_up_order(int floor)
 {
     up_orders[floor] = 0;
@@ -97,16 +73,6 @@ void Orders_remove_up_order(int floor)
 void Orders_remove_down_order(int floor)
 {
     down_orders[floor] = 0;
-}
-
-void Orders_set_up_order(int floor)
-{
-    up_orders[floor] = 1;
-}
-
-void Orders_set_down_order(int floor)
-{
-    down_orders[floor] = 1;
 }
 
 int Orders_up_order_over_floor(int current_floor)

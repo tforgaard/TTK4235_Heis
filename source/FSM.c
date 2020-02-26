@@ -81,7 +81,7 @@ void FSM_doors_open(Elevator *elevator, int * orders)
     }
     else
     {
-        if (Timer_get() >= 3000)
+        if (Timer_get() >= STOPTIME)
         {
             elevator->doors_are_open = 0;
         }

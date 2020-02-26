@@ -114,6 +114,7 @@ void Elevator_update_at_floor(Elevator *elevator)
         if (hardware_read_floor_sensor(i) == 1)
         {
             elevator->is_at_floor = 1;
+            return;
         }
     }
     elevator->is_at_floor = 0;

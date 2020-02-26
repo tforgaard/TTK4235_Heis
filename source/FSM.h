@@ -7,6 +7,7 @@
 
 #ifndef FSM_H
 #define FSM_H
+#define STOPTIME 3000
 
 void FSM_init(Elevator *elevator);
 
