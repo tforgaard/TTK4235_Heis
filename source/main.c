@@ -16,7 +16,18 @@ void printElevator(Elevator * elevator)
     printf("doors_open: %d \n", elevator->doors_are_open);
     printf("doors_obstructed: %d \n", elevator->doors_are_obstructed);
     printf("stop_button: %d \n", elevator->stop_button_is_pressed);
-    printf("state: %d \n\n\n", elevator->running_state);
+    printf("state: %d \n", elevator->running_state);
+}
+
+void printOrders(Orders * orders)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        printf("up: %d \n", orders->up_orders[i]);
+        printf("down: %d \n\n\n", orders->down_orders[i]);
+    }
+    
+
 }
 
 int main()
@@ -29,17 +40,20 @@ int main()
     }
 
     Elevator elevator;
+    Orders orders;
 
-    FSM_init(&elevator);
-
+    Elevator_init(&elevator);
+    Orders_init(HARDWARE_NUMBER_OF_FLOORS, &orders);
 
     while (1)
     {
         if (Timer_get() % 1000 == 0)
         {
             printElevator(&elevator);
+            printOrders(&orders);
         }
 
-        FSM_update(&elevator);
+
+        FSM_update(&elevator, &orders);
     }
 }

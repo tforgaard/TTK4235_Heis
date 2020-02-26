@@ -30,17 +30,8 @@ void Elevator_init(Elevator *elevator)
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
-int * Elevator_update(Elevator *elevator)
-{
-    //[up1, up2, ... upNFLOORS, down1, down2, .. downNFLOORS]
-    //memory freed in recieving function
-    int *orders = (int*)malloc(sizeof(int) * 2*HARDWARE_NUMBER_OF_FLOORS);
-
-    for (int i = 0; i < 2*HARDWARE_NUMBER_OF_FLOORS; i++)
-    {
-        orders[i] = 0;
-    }
-    
+void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders)
+{    
     if(elevator->doors_are_open)
     {
         hardware_command_door_open(1);
@@ -54,9 +45,8 @@ int * Elevator_update(Elevator *elevator)
     {
         elevator->stop_button_is_pressed = 1;
         hardware_command_stop_light(1);
-
         Elevator_turn_off_all_lights();
-        return orders; //empty orders
+        return;
     }
     else
     {
@@ -67,7 +57,6 @@ int * Elevator_update(Elevator *elevator)
     Elevator_update_current_floor(elevator);
     Elevator_update_at_floor(elevator);
     Elevator_update_obstruction_signal(elevator);
-
 
     //Read orders and set corresponding lights
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
@@ -81,13 +70,13 @@ int * Elevator_update(Elevator *elevator)
         if (hardware_read_order(i, HARDWARE_ORDER_UP))
         {
             hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
-            orders[i] = 1;
+            up_orders[i] = 1;
         }
 
         if (hardware_read_order(i, HARDWARE_ORDER_DOWN))
         {
             hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1);
-            orders[HARDWARE_NUMBER_OF_FLOORS + i] = 1;
+            down_orders[i] = 1;
         }
 
         if (hardware_read_order(i, HARDWARE_ORDER_INSIDE))
@@ -95,15 +84,14 @@ int * Elevator_update(Elevator *elevator)
             hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);
             if (i > elevator->current_floor)
             {
-                orders[i] = 1;
+                up_orders[i] = 1;
             }
             else
             {
-                orders[HARDWARE_NUMBER_OF_FLOORS + i] = 1;
+                down_orders[i] = 1;
             }
         }
     }
-    return orders;
 }
 
 

@@ -44,7 +44,7 @@ void Elevator_init();
  * 
  * @warning Receiving function most free memory! 
 */
-int * Elevator_update(Elevator *elevator);
+void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders);
 
 /**
  * @brief Checks whether the elevator is at a floor or between floors.
