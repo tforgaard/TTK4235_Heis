@@ -4,6 +4,7 @@
 #include "fsm.h"
 #include "elevator.h"
 #include "timer.h"
+#include "orders.h"
 
 
 
@@ -29,10 +30,8 @@ int main()
 
     Elevator elevator;
 
-   
-    
-
     FSM_init(&elevator);
+
 
     while (1)
     {
