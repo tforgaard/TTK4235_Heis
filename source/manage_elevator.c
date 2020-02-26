@@ -3,17 +3,26 @@
 
 #include <stdlib.h>
 
-void Elevator_init()
+void Elevator_init(Elevator *elevator)
 {
-    current_floor = -1;
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+    
+    elevator->is_at_floor = 0;
+    elevator->is_above_current_floor = 0;
+    elevator->stop_button_is_pressed = 0;
+    elevator->doors_are_obstructed = 0;
+    elevator->running_state = IDLE;
+    
+
+    elevator->current_floor = -1;
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
-    while (current_floor == -1)
+    while (elevator->current_floor == -1)
     {
         for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
         {
             if (hardware_read_floor_sensor(i) == 1)
             {
-                current_floor = i;
+                elevator->current_floor = i;
                 break;
             }
         }
@@ -21,7 +30,7 @@ void Elevator_init()
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
-int * Elevator_check_buttons()
+int * Elevator_update(Elevator *elevator)
 {
     //[up1, up2, ... upNFLOORS, down1, down2, .. downNFLOORS]
     //memory freed in recieving function
@@ -32,11 +41,39 @@ int * Elevator_check_buttons()
         orders[i] = 0;
     }
     
+    if(elevator->doors_are_open)
+    {
+        hardware_command_door_open(1);
+    }
+    else
+    {
+       hardware_command_door_open(0); 
+    }
+    
+    if (hardware_read_stop_signal())
+    {
+        elevator->stop_button_is_pressed = 1;
+        hardware_command_stop_light(1);
 
+        Elevator_turn_off_all_lights();
+        return orders; //empty orders
+    }
+    else
+    {
+        hardware_command_stop_light(0);
+        elevator->stop_button_is_pressed = 0;
+    }
+
+    Elevator_update_current_floor(elevator);
+    Elevator_update_at_floor(elevator);
+    Elevator_update_obstruction_signal(elevator);
+
+
+    //Read orders and set corresponding lights
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
 
-        if (Elevator_get_open_doors_flag() && i == current_floor)
+        if (elevator->doors_are_open && i == elevator->current_floor)
         {
             continue;
         }
@@ -56,7 +93,7 @@ int * Elevator_check_buttons()
         if (hardware_read_order(i, HARDWARE_ORDER_INSIDE))
         {
             hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);
-            if (i > current_floor)
+            if (i > elevator->current_floor)
             {
                 orders[i] = 1;
             }
@@ -69,73 +106,66 @@ int * Elevator_check_buttons()
     return orders;
 }
 
-int Elevator_at_floor()
+
+void Elevator_update_at_floor(Elevator *elevator)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
         if (hardware_read_floor_sensor(i) == 1)
         {
-            return 1;
+            elevator->is_at_floor = 1;
         }
     }
-    return 0;
+    elevator->is_at_floor = 0;
 }
 
-int Elevator_get_current_floor()
+void Elevator_update_obstruction_signal(Elevator *elevator)
 {
-    return current_floor;
+    if (hardware_read_obstruction_signal())
+    {
+        elevator->doors_are_obstructed = 1;
+    }
+    else
+    {
+        elevator->doors_are_obstructed = 0;
+    }
 }
 
 int direction_has_been_updated;
-void Elevator_update_current_floor(state direction)
+void Elevator_update_current_floor(Elevator *elevator)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
         if (hardware_read_floor_sensor(i) == 1)
         {
-            current_floor = i;
+            elevator->current_floor = i;
             hardware_command_floor_indicator_on(i);
             direction_has_been_updated = 0;
             return;
         }        
     } //Not at a floor
-    if (direction == MOVING_UP && !direction_has_been_updated)
+    if (elevator->running_state == MOVING_UP && !direction_has_been_updated)
     {
-        Elevator_is_above_current_floor = 1;
+        elevator->is_above_current_floor = 1;
         direction_has_been_updated = 1;
     }
-    else if (direction == MOVING_DOWN && !direction_has_been_updated)
+    else if (elevator->running_state == MOVING_DOWN && !direction_has_been_updated)
     {
-        Elevator_is_above_current_floor = 0;
+        elevator->is_above_current_floor = 0;
         direction_has_been_updated = 1;
     }
 }
 
-void Elevator_open_doors()
+void Elevator_finished_up_order(int current_floor)
 {
-    elevator_open_doors_flag = 1;
+    hardware_command_order_light(current_floor, HARDWARE_ORDER_UP, 0);
+    hardware_command_order_light(current_floor, HARDWARE_ORDER_INSIDE, 0);
 }
 
-int Elevator_get_open_doors_flag()
+void Elevator_finished_down_order(int current_floor)
 {
-    return elevator_open_doors_flag;
-}
-
-void Elevator_close_doors()
-{
-    elevator_open_doors_flag = 0;
-}
-
-void Elevator_finished_up_order()
-{
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_UP, 0);
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
-}
-
-void Elevator_finished_down_order()
-{
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_DOWN, 0);
-    hardware_command_order_light(Elevator_get_current_floor(), HARDWARE_ORDER_INSIDE, 0);
+    hardware_command_order_light(current_floor, HARDWARE_ORDER_DOWN, 0);
+    hardware_command_order_light(current_floor, HARDWARE_ORDER_INSIDE, 0);
 }
 
 void Elevator_turn_off_all_lights()

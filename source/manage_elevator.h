@@ -6,16 +6,27 @@
 #ifndef MANAGE_ELEVATOR_H
 #define MANAGE_ELEVATOR_H
 
-int current_floor;
-int Elevator_is_above_current_floor;
-int elevator_open_doors_flag;
-
 typedef enum state
 {
     IDLE,
     MOVING_UP,
     MOVING_DOWN
 } state;
+
+typedef struct Elevator
+{
+    int current_floor;
+    int is_above_current_floor;
+    int is_at_floor;
+
+    int doors_are_open;
+    int doors_are_obstructed;
+    
+    int stop_button_is_pressed;
+
+    state running_state;
+} Elevator;
+
 
 /**
  * @brief Initialises elevator by moving up until it finds a floor. 
@@ -33,21 +44,15 @@ void Elevator_init();
  * 
  * @warning Receiving function most free memory! 
 */
-int *Elevator_check_buttons();
+int * Elevator_update(Elevator *elevator);
 
 /**
  * @brief Checks whether the elevator is at a floor or between floors.
  *
  * @return 1 if elevator is at a floor. 0 if not. 
 */
-int Elevator_at_floor();
+void Elevator_update_at_floor(Elevator *elevator);
 
-/**
- * @brief Get the last known floor.
- *
- * @return the last floor the elevator was at in range [0, NUMBER_OF_FLOORS)
-*/
-int Elevator_get_current_floor();
 
 /**
  * @brief Will update the value of current floor.
@@ -55,12 +60,15 @@ int Elevator_get_current_floor();
  *
  * @param[in] direction The direction the elevator is moving at, can also be @c IDLE .
 */
-void Elevator_update_current_floor(state direction);
+void Elevator_update_current_floor(Elevator *elevator);
 
-//TODO: få disse inn i FSM.
-void Elevator_open_doors();
-int Elevator_get_open_doors_flag();
-void Elevator_close_doors();
+
+/**
+ * @brief Will update the value of obstruction signal.
+ * 
+ * @param[in] direction The direction the elevator is moving at, can also be @c IDLE .
+*/
+void Elevator_update_obstruction_signal(Elevator *elevator);
 
 /**
  * @brief Will turn off order up lights and inside lights at current floor.

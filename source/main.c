@@ -13,12 +13,12 @@ int main()
         exit(1);
     }
 
-    state current_state = IDLE;
+    Elevator elevator;
 
-    FSM_init();
+    FSM_init(&elevator);
 
     while (1)
     {
-        FSM_update(&current_state);
+        FSM_update(&elevator);
     }
 }
