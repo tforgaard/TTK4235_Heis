@@ -29,7 +29,7 @@ void FSM_update(state *current_state, order *current_order)
 
 void FSM_running(state *current_state, order *current_order)
 {
-    Elevator_update_current_floor(*current_state);
+    Elevator_update_current_floor(*current_order);
     Orders_recieve_and_set_orders(Elevator_check_buttons());
     hardware_command_stop_light(0);
 
@@ -133,7 +133,7 @@ void FSM_idle(state *current_state, order *current_order)
 
 void FSM_moving(state *current_state, order *current_order)
 {   
-    Elevator_update_current_floor(*current_state);
+    Elevator_update_current_floor(*current_order);
     if (Elevator_at_floor())
     {   
         if (Orders_floor_is_in_orders(current_floor, *current_order))

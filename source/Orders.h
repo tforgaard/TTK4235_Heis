@@ -23,9 +23,6 @@ int Orders_init(int number_of_floors);
 
 int Orders_floor_is_in_orders(int floor, order order);
 
-int Orders_get_highest_order(); //among down orders
-int Orders_get_lowest_order();  //among up orders
-
 int Orders_get_h_l_order(order order);
 
 void Orders_remove_order(int floor, order order);
