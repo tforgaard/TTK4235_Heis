@@ -23,7 +23,7 @@ int Orders_init(int number_of_floors, Orders * orders)
     return 0;
 }
 
-int Orders_floor_is_in(int floor, OrderType type, Orders * orders)
+int Orders_floor_is_in( OrderType type, Orders * orders, int floor)
 {
     if (type == UP && orders->up_orders[floor])
     {

@@ -23,7 +23,7 @@ typedef enum OrderType
 
 int Orders_init(int number_of_floors, Orders * orders);
 
-int Orders_floor_is_in(int floor, OrderType type, Orders * orders);
+int Orders_floor_is_in( OrderType type, Orders * orders, int floor);
 
 int Orders_extreme_value_of(OrderType type, Orders * orders);
 

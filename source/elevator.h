@@ -73,16 +73,7 @@ void Elevator_update_obstruction_signal(Elevator *elevator);
 /**
  * @brief Will turn off order up lights and inside lights at current floor.
 */
-void Elevator_finished_up_order(); //Change to up lights?
-
-/**
- * @brief Will turn off order down lights and inside lights at current floor.
-*/
-void Elevator_finished_down_order();
-
-/**
- * @brief Will turn off all up, down and inside lights.
-*/
+void Elevator_turn_off_lights_at(int floor);
 void Elevator_turn_off_all_lights();
 
 #endif

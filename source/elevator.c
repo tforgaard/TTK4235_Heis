@@ -5,8 +5,6 @@
 
 void Elevator_init(Elevator *elevator)
 {
-    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-    
     elevator->is_at_floor = 0;
     elevator->is_above_current_floor = 0;
     elevator->stop_button_is_pressed = 0;
@@ -145,17 +143,13 @@ void Elevator_update_current_floor(Elevator *elevator)
     }
 }
 
-void Elevator_finished_up_order(int current_floor)
+void Elevator_turn_off_lights_at(int floor)
 {
-    hardware_command_order_light(current_floor, HARDWARE_ORDER_UP, 0);
-    hardware_command_order_light(current_floor, HARDWARE_ORDER_INSIDE, 0);
+    hardware_command_order_light(floor, HARDWARE_ORDER_UP, 0);
+    hardware_command_order_light(floor, HARDWARE_ORDER_DOWN, 0);
+    hardware_command_order_light(floor, HARDWARE_ORDER_INSIDE, 0);
 }
 
-void Elevator_finished_down_order(int current_floor)
-{
-    hardware_command_order_light(current_floor, HARDWARE_ORDER_DOWN, 0);
-    hardware_command_order_light(current_floor, HARDWARE_ORDER_INSIDE, 0);
-}
 
 void Elevator_turn_off_all_lights()
 {
