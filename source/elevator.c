@@ -93,7 +93,7 @@ void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders)
 }
 
 
-static void Elevator_update_at_floor(Elevator *elevator)
+void Elevator_update_at_floor(Elevator *elevator)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
     {
@@ -106,7 +106,7 @@ static void Elevator_update_at_floor(Elevator *elevator)
     elevator->is_at_floor = 0;
 }
 
-static void Elevator_update_obstruction_signal(Elevator *elevator)
+void Elevator_update_obstruction_signal(Elevator *elevator)
 {
     if (hardware_read_obstruction_signal())
     {
@@ -118,7 +118,7 @@ static void Elevator_update_obstruction_signal(Elevator *elevator)
     }
 }
 
-static void Elevator_update_current_floor(Elevator *elevator)
+void Elevator_update_current_floor(Elevator *elevator)
 {
     static int direction_has_been_updated = 0;
 

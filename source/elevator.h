@@ -51,7 +51,7 @@ void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders);
  *
  * @return 1 if elevator is at a floor. 0 if not. 
 */
-static void Elevator_update_at_floor(Elevator *elevator);
+void Elevator_update_at_floor(Elevator *elevator);
 
 
 /**
@@ -60,7 +60,7 @@ static void Elevator_update_at_floor(Elevator *elevator);
  *
  * @param[in] direction The direction the elevator is moving at, can also be @c IDLE .
 */
-static void Elevator_update_current_floor(Elevator *elevator);
+void Elevator_update_current_floor(Elevator *elevator);
 
 
 /**
@@ -68,7 +68,7 @@ static void Elevator_update_current_floor(Elevator *elevator);
  * 
  * @param[in] direction The direction the elevator is moving at, can also be @c IDLE .
 */
-static void Elevator_update_obstruction_signal(Elevator *elevator);
+void Elevator_update_obstruction_signal(Elevator *elevator);
 
 /**
  * @brief Will turn off order up lights and inside lights at current floor.
