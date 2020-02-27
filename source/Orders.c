@@ -148,3 +148,7 @@ void Orders_recieve_and_set_orders(int * orders)
     }
     free(orders);
 }
+
+order Orders_reverse_order(order order){
+    return 1^order;
+}

@@ -35,4 +35,6 @@ int Orders_under_floor(int current_floor, order order);
 
 void Orders_recieve_and_set_orders(int * orders);
 
+order Orders_reverse_order(order order);
+
 #endif
