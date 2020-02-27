@@ -26,7 +26,7 @@ void FSM_update(Elevator *elevator, Orders *orders)
 
 void FSM_running(Elevator *elevator, Orders * orders)
 {
-    switch (elevator->running_state) //*elevator.running_state
+    switch (elevator->running_state)
     {
     case IDLE:
         FSM_idle(elevator, orders);
@@ -130,6 +130,7 @@ void FSM_moving_down(Elevator *elevator, Orders *orders)
         }
         else if (Orders_extreme_value_of(UP, orders) == current_floor)
         {
+            FSM_stopping_sequence(elevator, orders);
             elevator->running_state = MOVING_UP;
         }
         else
@@ -156,6 +157,7 @@ void FSM_moving_up(Elevator *elevator, Orders *orders)
         }
         else if (Orders_extreme_value_of(DOWN, orders) == current_floor)
         {
+            FSM_stopping_sequence(elevator, orders); 
             elevator->running_state = MOVING_DOWN;
         }
         else
