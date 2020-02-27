@@ -1,7 +1,7 @@
 #include <time.h>
 #include "timer.h"
 
-time_t Timer_time;
+static time_t Timer_time;
 
 void Timer_set(){
     Timer_time = clock();

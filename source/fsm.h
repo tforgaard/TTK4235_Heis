@@ -16,7 +16,7 @@ void FSM_running(Elevator *elevator, Orders *orders);
 
 void FSM_stop_button_engaged(Elevator *elevator, Orders *orders);
 
-void FSM_doors_open(Elevator *elevator, Orders *orders);
+void FSM_doors_open(Elevator *elevator);
 
 void FSM_idle(Elevator *elevator, Orders *orders);
 

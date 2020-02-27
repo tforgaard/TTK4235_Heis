@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-int Orders_init(int number_of_floors, Orders * orders)
+int Orders_init(Orders * orders, int number_of_floors)
 {
     orders->up_orders = malloc(sizeof(int) * number_of_floors);
     orders->down_orders = malloc(sizeof(int) * number_of_floors);
@@ -23,7 +23,13 @@ int Orders_init(int number_of_floors, Orders * orders)
     return 0;
 }
 
-int Orders_floor_is_in( OrderType type, Orders * orders, int floor)
+void Orders_free(Orders * orders)
+{
+    free(orders->up_orders);
+    free(orders->down_orders);
+}
+
+int Orders_floor_is_in(Orders * orders, OrderType type, int floor)
 {
     if (type == UP && orders->up_orders[floor])
     {
@@ -40,7 +46,7 @@ int Orders_floor_is_in( OrderType type, Orders * orders, int floor)
     return 0;  
 }
 
-int Orders_extreme_value_of(OrderType type, Orders * orders)
+int Orders_extreme_value_of(Orders * orders, OrderType type)
 {
     if (type == UP)
     {
@@ -65,10 +71,9 @@ int Orders_extreme_value_of(OrderType type, Orders * orders)
         return -1;
     }
     return -1;
-    //warning not to be used with less than!!!!!
 }
 
-void Orders_remove(int floor, OrderType type, Orders * orders)
+void Orders_remove(Orders * orders, OrderType type, int floor)
 {
     if (type == UP)
     {
@@ -85,7 +90,7 @@ void Orders_remove(int floor, OrderType type, Orders * orders)
     } 
 }
 
-int Orders_order_over(int floor, OrderType type, Orders * orders)
+int Orders_order_over(Orders * orders, OrderType type, int floor)
 {
     for (int i = floor + 1; i < orders->floor_count; i++)
     {
@@ -105,7 +110,7 @@ int Orders_order_over(int floor, OrderType type, Orders * orders)
     return 0;
 }
 
-int Orders_order_under(int floor, OrderType type, Orders * orders)
+int Orders_order_under(Orders * orders, OrderType type, int floor)
 {
     for (int i = 0; i < floor; i++)
     {
