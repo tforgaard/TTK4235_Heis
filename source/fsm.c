@@ -52,7 +52,7 @@ void FSM_stop_button_engaged(Elevator *elevator, Orders * orders)
     elevator->running_state = IDLE;
     
     Elevator_turn_off_all_lights();
-    Orders_remove_all_orders(orders);
+    Orders_remove_all(orders);
 
     if (elevator->is_at_floor)
     {
@@ -80,12 +80,12 @@ void FSM_doors_open(Elevator *elevator, Orders * orders)
 void FSM_idle(Elevator *elevator, Orders *orders)
 {
     int current_floor = elevator->current_floor;
-    if (Orders_down_order_over_floor(current_floor, orders) || Orders_up_order_over_floor(current_floor, orders))
+    if (Orders_order_over(current_floor, BOTH, orders))
     {
         elevator->running_state = MOVING_UP;
         hardware_command_movement(HARDWARE_MOVEMENT_UP);
     }
-    else if (Orders_up_order_under_floor(current_floor, orders) || Orders_down_order_under_floor(current_floor, orders))
+    else if (Orders_order_under(current_floor, BOTH, orders))
     {
         elevator->running_state = MOVING_DOWN;
         hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -94,14 +94,13 @@ void FSM_idle(Elevator *elevator, Orders *orders)
     {
         hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
-        if (Orders_floor_is_in_up_orders(current_floor, orders) || Orders_floor_is_in_down_orders(current_floor, orders))
+        if (Orders_floor_is_in(current_floor, BOTH, orders))
         {
             if (elevator->is_at_floor)
             {
                 Elevator_finished_down_order(current_floor, orders);
                 Elevator_finished_up_order(current_floor, orders);
-                Orders_remove_down_order(current_floor, orders);
-                Orders_remove_up_order(current_floor, orders);
+                Orders_remove(current_floor, BOTH, orders);
                 elevator->doors_are_open = 1;
                 Timer_set();
             }
@@ -124,25 +123,25 @@ void FSM_moving_down(Elevator *elevator, Orders *orders)
     int current_floor = elevator->current_floor;
     if (elevator->is_at_floor)
     {   
-        if (Orders_floor_is_in_down_orders(current_floor, orders))
+        if (Orders_floor_is_in(current_floor, DOWN, orders))
         {
             elevator->doors_are_open = 1;
             Timer_set();
             Elevator_finished_down_order(current_floor, orders);
-            Orders_remove_down_order(current_floor, orders);
-            if ((Orders_get_lowest_order(orders) == current_floor) && !Orders_down_order_under_floor(current_floor, orders))
+            Orders_remove(current_floor, DOWN, orders);
+            if ((Orders_extreme_value_of(UP, orders) == current_floor && !Orders_order_under(current_floor, BOTH, orders)))
             {
                 Elevator_finished_up_order(current_floor, orders);
-                Orders_remove_up_order(current_floor, orders);
+                Orders_remove(current_floor, UP, orders);
             }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
-        else if (Orders_down_order_under_floor(current_floor, orders) || Orders_up_order_under_floor(current_floor, orders))
+        else if (Orders_order_under(current_floor, BOTH, orders))
         {
             elevator->running_state = MOVING_DOWN;
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
         }
-        else if (Orders_get_lowest_order(orders) == current_floor)
+        else if (Orders_extreme_value_of(UP, orders) == current_floor)
         {
             elevator->running_state = MOVING_UP;
         }
@@ -159,25 +158,25 @@ void FSM_moving_up(Elevator *elevator, Orders *orders)
     int current_floor = elevator->current_floor;
     if (elevator->is_at_floor)
     {
-        if (Orders_floor_is_in_up_orders(current_floor, orders))
+        if (Orders_floor_is_in(current_floor, UP, orders))
         {
             elevator->doors_are_open = 1;
             Timer_set();
             Elevator_finished_up_order(current_floor, orders);
-            Orders_remove_up_order(current_floor, orders);
-            if ((Orders_get_highest_order(orders) == current_floor) && !Orders_up_order_over_floor(current_floor, orders))
+            Orders_remove(current_floor, UP, orders);
+            if ((Orders_extreme_value_of(DOWN, orders) == current_floor && !Orders_order_over(current_floor, BOTH, orders)))
             {
                 Elevator_finished_down_order(current_floor, orders);
-                Orders_remove_down_order(current_floor, orders);
+                Orders_remove(current_floor, DOWN, orders);
             }
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
         }
-        else if (Orders_up_order_over_floor(current_floor, orders) || Orders_down_order_over_floor(current_floor, orders))
+        else if (Orders_order_over(current_floor, BOTH, orders))
         {
             elevator->running_state = MOVING_UP;
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
         }
-        else if ((Orders_get_highest_order(orders) == current_floor))
+        else if (Orders_extreme_value_of(DOWN, orders) == current_floor)
         {
             elevator->running_state = MOVING_DOWN;
         }
