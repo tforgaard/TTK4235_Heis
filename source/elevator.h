@@ -6,14 +6,20 @@
 #ifndef ELEVATOR_H
 #define ELEVATOR_H
 
-typedef enum RunningState
+/**
+ * @brief Running states.
+ */
+typedef enum
 {
     IDLE,
     MOVING_UP,
     MOVING_DOWN
 } RunningState;
 
-typedef struct Elevator
+/**
+ * @brief Type that holds all relevant information about the elvator.
+ */
+typedef struct
 {
     int current_floor;
     int is_above_current_floor;
