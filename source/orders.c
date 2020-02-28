@@ -43,7 +43,7 @@ int Orders_floor_is_in(Orders *p_orders, OrderType type, int floor)
     {
         return 1;
     }
-    return 0;  
+    return 0;
 }
 
 int Orders_extreme_value_of(Orders *p_orders, OrderType type)
@@ -87,7 +87,7 @@ void Orders_remove(Orders *p_orders, OrderType type, int floor)
     {
         p_orders->p_up_orders[floor] = 0;
         p_orders->p_down_orders[floor] = 0;
-    } 
+    }
 }
 
 int Orders_order_over(Orders *p_orders, OrderType type, int floor)
@@ -127,9 +127,8 @@ int Orders_order_under(Orders *p_orders, OrderType type, int floor)
             return 1;
         }
     }
-    return 0;   
+    return 0;
 }
-
 
 void Orders_remove_all(Orders *p_orders)
 {

@@ -21,27 +21,28 @@ typedef enum
  */
 typedef struct
 {
-    int current_floor;              /** < The elevators last floor */
-    int is_above_current_floor;     /** < Flag to check if elevator is above or below the current floor */
-    int is_at_floor;                /** < Flag to check if elevator is at a floor */
+    int current_floor;          /** < The elevators last floor */
+    int is_above_current_floor; /** < Flag to check if elevator is above or below the @c current_floor */
+    int is_at_floor;            /** < Flag to check if elevator is at a floor */
 
-    int doors_are_open;             /** < Flag to check if elevator doors are open */
-    int doors_are_obstructed;       /** < Flag to check if elevator doors are obstructed */
-    
-    int stop_button_is_pressed;     /** < Flag to check if elevator stop button is pressed */
+    int doors_are_open;       /** < Flag to check if elevator doors are open */
+    int doors_are_obstructed; /** < Flag to check if elevator doors are obstructed */
 
-    RunningState running_state;     /** < Enum containing the running state */
+    int stop_button_is_pressed; /** < Flag to check if elevator stop button is pressed */
+
+    RunningState running_state; /** < Enum containing the running state */
 } Elevator;
-
 
 /**
  * @brief Will initialise elevator by moving up until it finds a floor. 
- * Also sets @c current_floor in @p elevator object.
+ * Also sets @c current_floor in @p p_elevator object.
+ * 
+ * @param[out] p_elevator A pointer to an Elevator struct.
 */
 void Elevator_init(Elevator *p_elevator);
 
 /**
- * @brief Will reacting to harware events. Updates elevator values, sets orders and lights.
+ * @brief Will react to hardware events. Updates elevator values, sets orders and lights.
  * 
  * @param[in, out] elevator Elevator object to be updated.
  * 
@@ -49,28 +50,26 @@ void Elevator_init(Elevator *p_elevator);
  * 
  * @param[out] down_orders Pointer to @p p_down_orders array to be updated. 
 */
-void Elevator_update(Elevator *p_elevator, int * p_up_orders, int * p_down_orders);
+void Elevator_update(Elevator *p_elevator, int *p_up_orders, int *p_down_orders);
 
-/**
- * @brief Will update the value of @c is_at_floor in @p p_elevator object to 1 if at a floor, 0 else.
-*/
+/// @private
 void Elevator_update_at_floor(Elevator *p_elevator);
-
 
 /**
  * @brief Will update the value of @c current_floor and @c Elevator_is_above_floor in @p p_elevator object.
+ * 
+ * @param[out] p_elevator A pointer to an Elevator struct.
+ * 
 */
 void Elevator_update_current_floor(Elevator *p_elevator);
 
-
-/**
- * @brief Will update the value of @c doors_are_obstructed in @p p_elevator object to 1 if obstructed 0 else.
- * 
-*/
+/// @private
 void Elevator_update_obstruction_signal(Elevator *p_elevator);
 
 /**
- * @brief Will turn off order up, down and inside lights at current @p floor.
+ * @brief Will turn off order up, down and inside lights at a given @c floor.
+ * 
+ * @param[in] floor the @p floor to turn off lights at.
 */
 void Elevator_turn_off_lights_at(int floor);
 

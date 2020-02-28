@@ -1,8 +1,6 @@
 #include "hardware.h"
 #include "elevator.h"
 
-#include <stdlib.h>
-
 void Elevator_init(Elevator *p_elevator)
 {
     p_elevator->is_at_floor = 0;
@@ -10,7 +8,6 @@ void Elevator_init(Elevator *p_elevator)
     p_elevator->stop_button_is_pressed = 0;
     p_elevator->doors_are_obstructed = 0;
     p_elevator->running_state = IDLE;
-    
 
     p_elevator->current_floor = -1;
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
@@ -28,17 +25,17 @@ void Elevator_init(Elevator *p_elevator)
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 }
 
-void Elevator_update(Elevator *p_elevator, int * p_up_orders, int * p_down_orders)
-{    
-    if(p_elevator->doors_are_open)
+void Elevator_update(Elevator *p_elevator, int *p_up_orders, int *p_down_orders)
+{
+    if (p_elevator->doors_are_open)
     {
         hardware_command_door_open(1);
     }
     else
     {
-       hardware_command_door_open(0); 
+        hardware_command_door_open(0);
     }
-    
+
     if (hardware_read_stop_signal())
     {
         p_elevator->stop_button_is_pressed = 1;
@@ -92,7 +89,6 @@ void Elevator_update(Elevator *p_elevator, int * p_up_orders, int * p_down_order
     }
 }
 
-
 void Elevator_update_at_floor(Elevator *p_elevator)
 {
     for (int i = 0; i < HARDWARE_NUMBER_OF_FLOORS; i++)
@@ -130,7 +126,7 @@ void Elevator_update_current_floor(Elevator *p_elevator)
             hardware_command_floor_indicator_on(i);
             direction_has_been_updated = 0;
             return;
-        }        
+        }
     } //Not at a floor
     if (p_elevator->running_state == MOVING_UP && !direction_has_been_updated)
     {
@@ -150,7 +146,6 @@ void Elevator_turn_off_lights_at(int floor)
     hardware_command_order_light(floor, HARDWARE_ORDER_DOWN, 0);
     hardware_command_order_light(floor, HARDWARE_ORDER_INSIDE, 0);
 }
-
 
 void Elevator_turn_off_all_lights()
 {

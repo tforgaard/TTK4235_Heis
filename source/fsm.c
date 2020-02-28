@@ -4,8 +4,6 @@
 #include "elevator.h"
 #include "hardware.h"
 
-#include <stdlib.h>
-
 void FSM_update(Elevator *p_elevator, Orders *p_orders)
 {
     Elevator_update(p_elevator, p_orders->p_up_orders, p_orders->p_down_orders);
@@ -50,7 +48,7 @@ void FSM_stop_button_engaged(Elevator *p_elevator, Orders *p_orders)
 {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     p_elevator->running_state = IDLE;
-    
+
     Elevator_turn_off_all_lights();
     Orders_remove_all(p_orders);
 
@@ -125,10 +123,10 @@ void FSM_idle(Elevator *p_elevator, Orders *p_orders)
 }
 
 void FSM_moving_down(Elevator *p_elevator, Orders *p_orders)
-{   
+{
     int current_floor = p_elevator->current_floor;
     if (p_elevator->is_at_floor)
-    {   
+    {
         if (Orders_floor_is_in(p_orders, DOWN, current_floor))
         {
             FSM_stopping_sequence(p_elevator, p_orders);
@@ -167,7 +165,7 @@ void FSM_moving_up(Elevator *p_elevator, Orders *p_orders)
         }
         else if (Orders_extreme_value_of(p_orders, DOWN) == current_floor)
         {
-            FSM_stopping_sequence(p_elevator, p_orders); 
+            FSM_stopping_sequence(p_elevator, p_orders);
             p_elevator->running_state = MOVING_DOWN;
         }
         else
@@ -177,4 +175,3 @@ void FSM_moving_up(Elevator *p_elevator, Orders *p_orders)
         }
     }
 }
-
