@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief Elevator module provide facilities to interact with hardware.
+ * @brief Elevator module provides an elevator structure and means to update it via hardware.
  */
 
 #ifndef ELEVATOR_H
@@ -45,14 +45,14 @@ void Elevator_init(Elevator *elevator);
  * 
  * @param[in, out] elevator Elevator object to be updated.
  * 
- * @param[out] up_orders Pointer to up orders array to be updated.
+ * @param[out] up_orders Pointer to @p up_orders array to be updated.
  * 
- * @param[out] down_orders Pointer to down orders array to be updated. 
+ * @param[out] down_orders Pointer to @p down_orders array to be updated. 
 */
 void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders);
 
 /**
- * @brief Will update the value of @c is_at_floor in @p elevator object.
+ * @brief Will update the value of @c is_at_floor in @p elevator object to 1 if at a floor, 0 else.
 */
 void Elevator_update_at_floor(Elevator *elevator);
 
@@ -64,7 +64,7 @@ void Elevator_update_current_floor(Elevator *elevator);
 
 
 /**
- * @brief Will update the value of @c doors_are_obstructed in @p elevator object.
+ * @brief Will update the value of @c doors_are_obstructed in @p elevator object to 1 if obstructed 0 else.
  * 
 */
 void Elevator_update_obstruction_signal(Elevator *elevator);

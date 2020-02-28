@@ -24,7 +24,7 @@ void FSM_update(Elevator *elevator, Orders *orders)
     }
 }
 
-void FSM_running(Elevator *elevator, Orders * orders)
+void FSM_running(Elevator *elevator, Orders *orders)
 {
     switch (elevator->running_state)
     {
@@ -46,7 +46,7 @@ void FSM_running(Elevator *elevator, Orders * orders)
     }
 }
 
-void FSM_stop_button_engaged(Elevator *elevator, Orders * orders)
+void FSM_stop_button_engaged(Elevator *elevator, Orders *orders)
 {
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
     elevator->running_state = IDLE;
@@ -81,6 +81,7 @@ static void FSM_stopping_sequence(Elevator *elevator, Orders *orders)
 {
     elevator->doors_are_open = 1;
     Timer_set();
+    Elevator_update_current_floor(elevator); //fixes weird rare timing bug.
     Elevator_turn_off_lights_at(elevator->current_floor);
     Orders_remove(orders, BOTH, elevator->current_floor);
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);

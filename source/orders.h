@@ -21,17 +21,17 @@ typedef enum OrderType
     BOTH
 } OrderType;
 
-int Orders_init(Orders * orders, int number_of_floors);
-void Orders_free(Orders * orders);
+int Orders_init(Orders *orders, int number_of_floors);
+void Orders_free(Orders *orders);
 
-int Orders_floor_is_in(Orders * orders, OrderType type, int floor);
+int Orders_floor_is_in(Orders *orders, OrderType type, int floor);
 
-int Orders_extreme_value_of(Orders * orders, OrderType type);
+int Orders_extreme_value_of(Orders *orders, OrderType type);
 
-void Orders_remove(Orders * orders, OrderType type, int floor);
-void Orders_remove_all(Orders * orders);
+void Orders_remove(Orders *orders, OrderType type, int floor);
+void Orders_remove_all(Orders *orders);
 
-int Orders_order_over(Orders * orders, OrderType type, int floor);
-int Orders_order_under(Orders * orders, OrderType type, int floor);
+int Orders_order_over(Orders *orders, OrderType type, int floor);
+int Orders_order_under(Orders *orders, OrderType type, int floor);
 
 #endif
