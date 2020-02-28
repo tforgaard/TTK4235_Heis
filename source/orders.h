@@ -12,9 +12,9 @@
  */
 typedef struct Orders
 {
-    int *p_up_orders;   /** < Pointer to up orders array */
-    int *p_down_orders; /** < Pointer to up orders array */
-    int floor_count;    /** < The number of floors */
+    int *p_up_orders;   ///< Pointer to up orders array
+    int *p_down_orders; ///< Pointer to up orders array
+    int floor_count;    ///< The number of floors
 } Orders;
 
 /**
@@ -109,7 +109,7 @@ void Orders_remove_all(Orders *p_order);
 int Orders_order_over(Orders *p_order, OrderType type, int floor);
 
 /**
- * @brief Checks if there is a specific order under the floor,
+ * @brief Checks if there is a specific order under the floor.
  * 
  * @param[in] p_orders A pointer to an @c Orders struct containing pointers to the order arrays.
  * 

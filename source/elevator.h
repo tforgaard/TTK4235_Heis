@@ -17,24 +17,24 @@ typedef enum
 } RunningState;
 
 /**
- * @brief Type that holds all relevant information about the elvator.
+ * @brief Type that holds all relevant information about the elevator.
  */
 typedef struct
 {
-    int current_floor;          /** < The elevators last floor */
-    int is_above_current_floor; /** < Flag to check if elevator is above or below the @c current_floor */
-    int is_at_floor;            /** < Flag to check if elevator is at a floor */
+    int current_floor;              ///< The elevators last floor
+    int is_above_current_floor;     ///< Flag to check if elevator is above or below the @c current_floor
+    int is_at_floor;                ///< Flag to check if elevator is at a floor
 
-    int doors_are_open;       /** < Flag to check if elevator doors are open */
-    int doors_are_obstructed; /** < Flag to check if elevator doors are obstructed */
+    int doors_are_open;             ///< Flag to check if elevator doors are open
+    int doors_are_obstructed;       ///< Flag to check if elevator doors are obstructed
 
-    int stop_button_is_pressed; /** < Flag to check if elevator stop button is pressed */
+    int stop_button_is_pressed;     ///< Flag to check if elevator stop button is pressed
 
-    RunningState running_state; /** < Enum containing the running state */
+    RunningState running_state;     ///< Enum containing the running state
 } Elevator;
 
 /**
- * @brief Will initialise elevator by moving up until it finds a floor. 
+ * @brief Will initialize elevator by moving up until it finds a floor. 
  * Also sets @c current_floor in @p p_elevator object.
  * 
  * @param[out] p_elevator A pointer to an Elevator struct.
