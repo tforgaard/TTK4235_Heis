@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-int Orders_init(Orders * orders, int number_of_floors)
+int Orders_init(Orders *orders, int number_of_floors)
 {
     orders->up_orders = malloc(sizeof(int) * number_of_floors);
     orders->down_orders = malloc(sizeof(int) * number_of_floors);
@@ -23,13 +23,13 @@ int Orders_init(Orders * orders, int number_of_floors)
     return 0;
 }
 
-void Orders_free(Orders * orders)
+void Orders_free(Orders *orders)
 {
     free(orders->up_orders);
     free(orders->down_orders);
 }
 
-int Orders_floor_is_in(Orders * orders, OrderType type, int floor)
+int Orders_floor_is_in(Orders *orders, OrderType type, int floor)
 {
     if (type == UP && orders->up_orders[floor])
     {
@@ -46,7 +46,7 @@ int Orders_floor_is_in(Orders * orders, OrderType type, int floor)
     return 0;  
 }
 
-int Orders_extreme_value_of(Orders * orders, OrderType type)
+int Orders_extreme_value_of(Orders *orders, OrderType type)
 {
     if (type == UP)
     {
@@ -73,7 +73,7 @@ int Orders_extreme_value_of(Orders * orders, OrderType type)
     return -1;
 }
 
-void Orders_remove(Orders * orders, OrderType type, int floor)
+void Orders_remove(Orders *orders, OrderType type, int floor)
 {
     if (type == UP)
     {
@@ -90,7 +90,7 @@ void Orders_remove(Orders * orders, OrderType type, int floor)
     } 
 }
 
-int Orders_order_over(Orders * orders, OrderType type, int floor)
+int Orders_order_over(Orders *orders, OrderType type, int floor)
 {
     for (int i = floor + 1; i < orders->floor_count; i++)
     {
@@ -110,7 +110,7 @@ int Orders_order_over(Orders * orders, OrderType type, int floor)
     return 0;
 }
 
-int Orders_order_under(Orders * orders, OrderType type, int floor)
+int Orders_order_under(Orders *orders, OrderType type, int floor)
 {
     for (int i = 0; i < floor; i++)
     {
@@ -131,7 +131,7 @@ int Orders_order_under(Orders * orders, OrderType type, int floor)
 }
 
 
-void Orders_remove_all(Orders * orders)
+void Orders_remove_all(Orders *orders)
 {
     for (int i = 0; i < orders->floor_count; i++)
     {

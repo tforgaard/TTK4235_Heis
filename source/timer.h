@@ -7,7 +7,7 @@
 #define TIMER_H
 
 /**
- * @brief Reset the stopwatch and starts it
+ * @brief Resets the stopwatch and starts it
  *
 */
 void Timer_set();
