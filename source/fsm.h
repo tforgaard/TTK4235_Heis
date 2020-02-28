@@ -24,6 +24,6 @@ void FSM_moving_down(Elevator *elevator, Orders *orders);
 
 void FSM_moving_up(Elevator *elevator, Orders *orders);
 
-void FSM_stopping_sequence(Elevator *elevator, Orders *orders);
+//static void FSM_stopping_sequence(Elevator *elevator, Orders *orders);
 
 #endif

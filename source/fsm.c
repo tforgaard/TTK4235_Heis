@@ -77,6 +77,15 @@ void FSM_doors_open(Elevator *elevator)
     }
 }
 
+static void FSM_stopping_sequence(Elevator *elevator, Orders *orders)
+{
+    elevator->doors_are_open = 1;
+    Timer_set();
+    Elevator_turn_off_lights_at(elevator->current_floor);
+    Orders_remove(orders, BOTH, elevator->current_floor);
+    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+}
+
 void FSM_idle(Elevator *elevator, Orders *orders)
 {
     int current_floor = elevator->current_floor;
@@ -168,11 +177,3 @@ void FSM_moving_up(Elevator *elevator, Orders *orders)
     }
 }
 
-void FSM_stopping_sequence(Elevator *elevator, Orders *orders)
-{
-    elevator->doors_are_open = 1;
-    Timer_set();
-    Elevator_turn_off_lights_at(elevator->current_floor);
-    Orders_remove(orders, BOTH, elevator->current_floor);
-    hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-}
