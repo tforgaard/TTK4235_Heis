@@ -38,36 +38,36 @@ typedef struct
  * @brief Will initialise elevator by moving up until it finds a floor. 
  * Also sets @c current_floor in @p elevator object.
 */
-void Elevator_init(Elevator *elevator);
+void Elevator_init(Elevator *p_elevator);
 
 /**
  * @brief Will reacting to harware events. Updates elevator values, sets orders and lights.
  * 
  * @param[in, out] elevator Elevator object to be updated.
  * 
- * @param[out] up_orders Pointer to @p up_orders array to be updated.
+ * @param[out] up_orders Pointer to @p p_up_orders array to be updated.
  * 
- * @param[out] down_orders Pointer to @p down_orders array to be updated. 
+ * @param[out] down_orders Pointer to @p p_down_orders array to be updated. 
 */
-void Elevator_update(Elevator *elevator, int * up_orders, int * down_orders);
+void Elevator_update(Elevator *p_elevator, int * p_up_orders, int * p_down_orders);
 
 /**
- * @brief Will update the value of @c is_at_floor in @p elevator object to 1 if at a floor, 0 else.
+ * @brief Will update the value of @c is_at_floor in @p p_elevator object to 1 if at a floor, 0 else.
 */
-void Elevator_update_at_floor(Elevator *elevator);
-
-
-/**
- * @brief Will update the value of @c current_floor and @c Elevator_is_above_floor in @p elevator object.
-*/
-void Elevator_update_current_floor(Elevator *elevator);
+void Elevator_update_at_floor(Elevator *p_elevator);
 
 
 /**
- * @brief Will update the value of @c doors_are_obstructed in @p elevator object to 1 if obstructed 0 else.
+ * @brief Will update the value of @c current_floor and @c Elevator_is_above_floor in @p p_elevator object.
+*/
+void Elevator_update_current_floor(Elevator *p_elevator);
+
+
+/**
+ * @brief Will update the value of @c doors_are_obstructed in @p p_elevator object to 1 if obstructed 0 else.
  * 
 */
-void Elevator_update_obstruction_signal(Elevator *elevator);
+void Elevator_update_obstruction_signal(Elevator *p_elevator);
 
 /**
  * @brief Will turn off order up, down and inside lights at current @p floor.

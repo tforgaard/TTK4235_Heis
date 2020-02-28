@@ -12,8 +12,8 @@ int main()
         exit(1);
     }
 
-    static Elevator elevator;
-    static Orders orders;
+    Elevator elevator;
+    Orders orders;
 
     Elevator_init(&elevator);
     Orders_init(&orders, HARDWARE_NUMBER_OF_FLOORS);

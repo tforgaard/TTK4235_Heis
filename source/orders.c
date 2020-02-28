@@ -2,57 +2,57 @@
 
 #include <stdlib.h>
 
-int Orders_init(Orders *orders, int number_of_floors)
+int Orders_init(Orders *p_orders, int number_of_floors)
 {
-    orders->up_orders = malloc(sizeof(int) * number_of_floors);
-    orders->down_orders = malloc(sizeof(int) * number_of_floors);
+    p_orders->p_up_orders = malloc(sizeof(int) * number_of_floors);
+    p_orders->p_down_orders = malloc(sizeof(int) * number_of_floors);
 
-    if (!orders->up_orders || !orders->down_orders)
+    if (!p_orders->p_up_orders || !p_orders->p_down_orders)
     {
         return -1;
     }
 
     for (int i = 0; i < number_of_floors; i++)
     {
-        orders->up_orders[i] = 0;
-        orders->down_orders[i] = 0;
+        p_orders->p_up_orders[i] = 0;
+        p_orders->p_down_orders[i] = 0;
     }
 
-    orders->floor_count = number_of_floors;
+    p_orders->floor_count = number_of_floors;
 
     return 0;
 }
 
-void Orders_free(Orders *orders)
+void Orders_free(Orders *p_orders)
 {
-    free(orders->up_orders);
-    free(orders->down_orders);
+    free(p_orders->p_up_orders);
+    free(p_orders->p_down_orders);
 }
 
-int Orders_floor_is_in(Orders *orders, OrderType type, int floor)
+int Orders_floor_is_in(Orders *p_orders, OrderType type, int floor)
 {
-    if (type == UP && orders->up_orders[floor])
+    if (type == UP && p_orders->p_up_orders[floor])
     {
         return 1;
     }
-    else if (type == DOWN && orders->down_orders[floor])
+    else if (type == DOWN && p_orders->p_down_orders[floor])
     {
         return 1;
     }
-    else if (type == BOTH && (orders->down_orders[floor] || orders->up_orders[floor]))
+    else if (type == BOTH && (p_orders->p_down_orders[floor] || p_orders->p_up_orders[floor]))
     {
         return 1;
     }
     return 0;  
 }
 
-int Orders_extreme_value_of(Orders *orders, OrderType type)
+int Orders_extreme_value_of(Orders *p_orders, OrderType type)
 {
     if (type == UP)
     {
-        for (int i = 0; i < orders->floor_count; i++)
+        for (int i = 0; i < p_orders->floor_count; i++)
         {
-            if (orders->up_orders[i] == 1)
+            if (p_orders->p_up_orders[i] == 1)
             {
                 return i;
             }
@@ -61,9 +61,9 @@ int Orders_extreme_value_of(Orders *orders, OrderType type)
     }
     else if (type == DOWN)
     {
-        for (int i = orders->floor_count - 1; i >= 0; i--)
+        for (int i = p_orders->floor_count - 1; i >= 0; i--)
         {
-            if (orders->down_orders[i] == 1)
+            if (p_orders->p_down_orders[i] == 1)
             {
                 return i;
             }
@@ -73,36 +73,36 @@ int Orders_extreme_value_of(Orders *orders, OrderType type)
     return -1;
 }
 
-void Orders_remove(Orders *orders, OrderType type, int floor)
+void Orders_remove(Orders *p_orders, OrderType type, int floor)
 {
     if (type == UP)
     {
-        orders->up_orders[floor] = 0;
+        p_orders->p_up_orders[floor] = 0;
     }
     else if (type == DOWN)
     {
-        orders->down_orders[floor] = 0;
+        p_orders->p_down_orders[floor] = 0;
     }
     else if (type == BOTH)
     {
-        orders->up_orders[floor] = 0;
-        orders->down_orders[floor] = 0;
+        p_orders->p_up_orders[floor] = 0;
+        p_orders->p_down_orders[floor] = 0;
     } 
 }
 
-int Orders_order_over(Orders *orders, OrderType type, int floor)
+int Orders_order_over(Orders *p_orders, OrderType type, int floor)
 {
-    for (int i = floor + 1; i < orders->floor_count; i++)
+    for (int i = floor + 1; i < p_orders->floor_count; i++)
     {
-        if (type == UP && orders->up_orders[i] == 1)
+        if (type == UP && p_orders->p_up_orders[i] == 1)
         {
             return 1;
         }
-        else if (type == DOWN && orders->down_orders[i] == 1)
+        else if (type == DOWN && p_orders->p_down_orders[i] == 1)
         {
             return 1;
         }
-        else if (type == BOTH && (orders->up_orders[i] == 1 || orders->down_orders[i] == 1))
+        else if (type == BOTH && (p_orders->p_up_orders[i] == 1 || p_orders->p_down_orders[i] == 1))
         {
             return 1;
         }
@@ -110,19 +110,19 @@ int Orders_order_over(Orders *orders, OrderType type, int floor)
     return 0;
 }
 
-int Orders_order_under(Orders *orders, OrderType type, int floor)
+int Orders_order_under(Orders *p_orders, OrderType type, int floor)
 {
     for (int i = 0; i < floor; i++)
     {
-        if (type == UP && orders->up_orders[i] == 1)
+        if (type == UP && p_orders->p_up_orders[i] == 1)
         {
             return 1;
         }
-        else if (type == DOWN && orders->down_orders[i] == 1)
+        else if (type == DOWN && p_orders->p_down_orders[i] == 1)
         {
             return 1;
         }
-        else if (type == BOTH && (orders->up_orders[i] == 1 || orders->down_orders[i] == 1))
+        else if (type == BOTH && (p_orders->p_up_orders[i] == 1 || p_orders->p_down_orders[i] == 1))
         {
             return 1;
         }
@@ -131,11 +131,11 @@ int Orders_order_under(Orders *orders, OrderType type, int floor)
 }
 
 
-void Orders_remove_all(Orders *orders)
+void Orders_remove_all(Orders *p_orders)
 {
-    for (int i = 0; i < orders->floor_count; i++)
+    for (int i = 0; i < p_orders->floor_count; i++)
     {
-        orders->up_orders[i] = 0;
-        orders->down_orders[i] = 0;
+        p_orders->p_up_orders[i] = 0;
+        p_orders->p_down_orders[i] = 0;
     }
 }

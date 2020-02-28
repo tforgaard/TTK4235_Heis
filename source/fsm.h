@@ -13,20 +13,20 @@
 /**
  * @brief Updates the finite state machine
  * 
- * @param elevator 
+ * @param p_elevator 
  */
-void FSM_update(Elevator *elevator, Orders *orders);
+void FSM_update(Elevator *p_elevator, Orders *p_orders);
 
-void FSM_running(Elevator *elevator, Orders *orders);
+void FSM_running(Elevator *p_elevator, Orders *p_orders);
 
-void FSM_stop_button_engaged(Elevator *elevator, Orders *orders);
+void FSM_stop_button_engaged(Elevator *p_elevator, Orders *p_orders);
 
-void FSM_doors_open(Elevator *elevator);
+void FSM_doors_open(Elevator *p_elevator);
 
-void FSM_idle(Elevator *elevator, Orders *orders);
+void FSM_idle(Elevator *p_elevator, Orders *p_orders);
 
-void FSM_moving_down(Elevator *elevator, Orders *orders);
+void FSM_moving_down(Elevator *p_elevator, Orders *p_orders);
 
-void FSM_moving_up(Elevator *elevator, Orders *orders);
+void FSM_moving_up(Elevator *p_elevator, Orders *p_orders);
 
 #endif
