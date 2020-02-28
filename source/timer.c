@@ -1,11 +1,11 @@
 #include <time.h>
 #include "timer.h"
 
-static time_t Timer_time;
+static time_t m_timer;
 
 void Timer_set(){
-    Timer_time = clock();
+    m_timer = clock();
 }
 int Timer_get(){
-    return (clock()-Timer_time) * 1000 / CLOCKS_PER_SEC;
+    return (clock()-m_timer) * 1000 / CLOCKS_PER_SEC;
 }

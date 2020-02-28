@@ -81,7 +81,7 @@ static void FSM_stopping_sequence(Elevator *p_elevator, Orders *p_orders)
 {
     p_elevator->doors_are_open = 1;
     Timer_set();
-    Elevator_update_current_floor(p_elevator); //fixes weird rare timing bug.
+    Elevator_update_current_floor(p_elevator);
     Elevator_turn_off_lights_at(p_elevator->current_floor);
     Orders_remove(p_orders, BOTH, p_elevator->current_floor);
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);

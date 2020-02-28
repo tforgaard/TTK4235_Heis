@@ -21,16 +21,16 @@ typedef enum
  */
 typedef struct
 {
-    int current_floor;
-    int is_above_current_floor;
-    int is_at_floor;
+    int current_floor;              /** < The elevators last floor */
+    int is_above_current_floor;     /** < Flag to check if elevator is above or below the current floor */
+    int is_at_floor;                /** < Flag to check if elevator is at a floor */
 
-    int doors_are_open;
-    int doors_are_obstructed;
+    int doors_are_open;             /** < Flag to check if elevator doors are open */
+    int doors_are_obstructed;       /** < Flag to check if elevator doors are obstructed */
     
-    int stop_button_is_pressed;
+    int stop_button_is_pressed;     /** < Flag to check if elevator stop button is pressed */
 
-    RunningState running_state;
+    RunningState running_state;     /** < Enum containing the running state */
 } Elevator;
 
 

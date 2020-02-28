@@ -13,7 +13,10 @@
 /**
  * @brief Updates the finite state machine
  * 
- * @param p_elevator 
+ * @param p_elevator pointer to the Elevator struct
+ * 
+ * @param p_orders pointer to the Orders struct containing order arrrays
+ * 
  */
 void FSM_update(Elevator *p_elevator, Orders *p_orders);
 
