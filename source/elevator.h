@@ -55,12 +55,7 @@ void Elevator_update(Elevator *p_elevator, int *p_up_orders, int *p_down_orders)
 /// @private
 void Elevator_update_at_floor(Elevator *p_elevator);
 
-/**
- * @brief Will update the value of @c current_floor and @c Elevator_is_above_floor in @p p_elevator object.
- * 
- * @param[out] p_elevator A pointer to an Elevator struct.
- * 
-*/
+/// @private
 void Elevator_update_current_floor(Elevator *p_elevator);
 
 /// @private

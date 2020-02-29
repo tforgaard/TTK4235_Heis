@@ -23,6 +23,7 @@ void FSM_update(Elevator *p_elevator, Orders *p_orders);
 /// @private
 void FSM_running(Elevator *p_elevator, Orders *p_orders);
 
+/// @private
 void FSM_stop_button_engaged(Elevator *p_elevator, Orders *p_orders);
 
 /// @private
