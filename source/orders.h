@@ -92,7 +92,7 @@ void Orders_remove(Orders *p_orders, OrderType type, int floor);
  * @param[out] p_orders A pointer to an @c Orders struct containing pointers to the order arrays.
  * 
  */
-void Orders_remove_all(Orders *p_order);
+void Orders_remove_all(Orders *p_orders);
 
 /**
  * @brief Checks if there is a specific order over the floor.
@@ -106,7 +106,7 @@ void Orders_remove_all(Orders *p_order);
  * @return 1 if there exists an order over the floor, 0 if not.
  * 
  */
-int Orders_order_over(Orders *p_order, OrderType type, int floor);
+int Orders_order_over(Orders *p_orders, OrderType type, int floor);
 
 /**
  * @brief Checks if there is a specific order under the floor.
@@ -120,6 +120,6 @@ int Orders_order_over(Orders *p_order, OrderType type, int floor);
  * @return 1 if there exists an order under the floor, 0 if not.
  * 
  */
-int Orders_order_under(Orders *p_order, OrderType type, int floor);
+int Orders_order_under(Orders *p_orders, OrderType type, int floor);
 
 #endif

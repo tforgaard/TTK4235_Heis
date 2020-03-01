@@ -44,11 +44,11 @@ void Elevator_init(Elevator *p_elevator);
 /**
  * @brief Will react to hardware events. Updates elevator values, sets orders and lights.
  * 
- * @param[in, out] elevator Elevator object to be updated.
+ * @param[in, out] p_elevator Elevator object to be updated.
  * 
- * @param[out] up_orders Pointer to @p p_up_orders array to be updated.
+ * @param[out] p_up_orders Pointer to @p p_up_orders array to be updated.
  * 
- * @param[out] down_orders Pointer to @p p_down_orders array to be updated. 
+ * @param[out] p_down_orders Pointer to @p p_down_orders array to be updated. 
 */
 void Elevator_update(Elevator *p_elevator, int *p_up_orders, int *p_down_orders);
 
